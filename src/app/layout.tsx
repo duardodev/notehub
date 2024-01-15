@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR">
       <body className={`${inter.className} ${lato.variable} antialiased`}>
         <Header />
-        <main className="mx-auto max-w-[1200px] px-4 py-[86px]">{children}</main>
+        <main className="mx-auto max-w-[1200px] px-5 py-20">{children}</main>
       </body>
     </html>
   );
