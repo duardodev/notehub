@@ -1,6 +1,6 @@
 'use client';
 
-import { useUser, UserButton } from '@clerk/nextjs';
+import { useUser, SignedIn, UserButton } from '@clerk/nextjs';
 
 import { IconLoader2, IconSunHigh } from '@tabler/icons-react';
 import { Button } from './ui/button';
@@ -15,9 +15,11 @@ export function Header() {
 
       <div className="flex items-center gap-3">
         {isLoaded ? (
-          <UserButton afterSignOutUrl="/" />
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
         ) : (
-          <IconLoader2 className="animate-spin" size={22} />
+          <IconLoader2 className="animate-spin" size={24} />
         )}
 
         <Button variant={'outline'} size={'icon'}>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Lato } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Header } from '@/components/header';
+import { ptBR } from '@clerk/localizations';
 
 import './globals.css';
 
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={ptBR}>
       <html lang="pt-BR">
         <body className={`${inter.className} ${lato.variable} antialiased`}>
           <Header />
