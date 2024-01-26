@@ -2,9 +2,10 @@
 
 import { useUser, SignedIn, UserButton } from '@clerk/nextjs';
 
-import { IconLoader2, IconSunHigh } from '@tabler/icons-react';
 import { Button } from '../../../components/ui/button';
 import { Logo } from '../../../components/logo';
+import { IconLoader2 } from '@tabler/icons-react';
+import { SunMedium } from 'lucide-react';
 
 export function Header() {
   const { isLoaded } = useUser();
@@ -23,7 +24,7 @@ export function Header() {
         )}
 
         <Button variant={'outline'} size={'icon'}>
-          <IconSunHigh size={24} />
+          <SunMedium size={22} />
         </Button>
       </div>
     </header>
