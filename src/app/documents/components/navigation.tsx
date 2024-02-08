@@ -3,11 +3,11 @@
 import { ElementRef, useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { Sidebar } from './sidebar';
 
 import { IconLayoutSidebarLeftExpand } from '@tabler/icons-react';
 import { useMediaQuery } from 'usehooks-ts';
 import { cn } from '@/lib/utils';
-import { Sidebar } from './sidebar';
 
 export function Navigation() {
   const pathname = usePathname();
@@ -18,6 +18,21 @@ export function Navigation() {
   const sidebarRef = useRef<ElementRef<'aside'>>(null);
   const navbarRef = useRef<ElementRef<'div'>>(null);
   const isResizingRef = useRef(false);
+
+  useEffect(() => {
+    if (isMobile) {
+      handleCollapse();
+    } else {
+      handleResetWidth();
+      setIsResetting(false);
+    }
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (isMobile) {
+      handleCollapse();
+    }
+  }, [pathname, isMobile]);
 
   function handleMouseDown(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
@@ -50,10 +65,20 @@ export function Navigation() {
     document.removeEventListener('mouseup', handleMouseUp);
   }
 
+  function handleCollapse() {
+    if (sidebarRef.current && navbarRef.current) {
+      setIsCollapsed(true);
+      setIsResetting(true);
+
+      sidebarRef.current.style.width = '0';
+      navbarRef.current.style.width = '100%';
+      navbarRef.current.style.left = '0';
+    }
+  }
+
   function handleResetWidth() {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(false);
-      setIsResetting(true);
 
       sidebarRef.current.style.width = '256px';
       navbarRef.current.style.setProperty('width', isMobile ? '100%' : 'calc(100% - 256px)');
@@ -62,38 +87,12 @@ export function Navigation() {
     }
   }
 
-  function handleCollapse() {
-    if (sidebarRef.current && navbarRef.current) {
-      setIsCollapsed(true);
-      setIsResetting(true);
-
-      sidebarRef.current.style.width = '0';
-      navbarRef.current.style.setProperty('width', '100%');
-      navbarRef.current.style.setProperty('left', '0');
-      setTimeout(() => setIsResetting(false), 300);
-    }
-  }
-
-  useEffect(() => {
-    if (isMobile) {
-      handleCollapse();
-    } else {
-      handleResetWidth();
-    }
-  }, [isMobile]);
-
-  useEffect(() => {
-    if (isMobile) {
-      handleCollapse();
-    }
-  }, [pathname, isMobile]);
-
   return (
     <>
       <div
         className={cn(
           'bg-gray-500 w-screen h-screen opacity-0 visible md:hidden fixed left-64 transition-all ease-in-out duration-300',
-          !isCollapsed && 'opacity-30',
+          !isCollapsed && 'opacity-40',
           isCollapsed && 'hidden'
         )}
       />
@@ -103,7 +102,7 @@ export function Navigation() {
         isMobile={isMobile}
         isResetting={isResetting}
         handleCollapse={handleCollapse}
-        handleResetWidth={handleCollapse}
+        handleResetWidth={handleResetWidth}
         handleMouseDown={handleMouseDown}
       />
 
@@ -112,8 +111,7 @@ export function Navigation() {
         className={cn(
           'w-[calc(100%-256px)] absolute top-0 left-64 z-10',
           isResetting && 'transition-all ease-in-out duration-300',
-          isMobile && 'left-0 w-full',
-          !isMobile && !isCollapsed && 'static'
+          isMobile && 'left-0 w-full'
         )}
       >
         <nav className="p-3 w-full">
