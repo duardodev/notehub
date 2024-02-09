@@ -91,7 +91,7 @@ export function Navigation() {
     <>
       <div
         className={cn(
-          'bg-gray-500 w-screen h-screen opacity-0 visible md:hidden fixed left-64 transition-all ease-in-out duration-300',
+          'bg-gray-500 w-screen h-screen opacity-0 visible md:hidden fixed left-0 right-0 top-0 transition-opacity ease-in-out duration-300',
           !isCollapsed && 'opacity-40',
           isCollapsed && 'hidden'
         )}
