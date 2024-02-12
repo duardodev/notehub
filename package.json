@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "prisma generate && next dev",
+    "build": "prisma generate && prism db push && next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@clerk/localizations": "^1.26.13",
     "@clerk/nextjs": "^4.29.4",
+    "@prisma/client": "^5.9.1",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-slot": "^1.0.2",
     "@tabler/icons-react": "^2.46.0",
@@ -32,6 +33,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "postcss": "^8",
+    "prisma": "^5.9.1",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
