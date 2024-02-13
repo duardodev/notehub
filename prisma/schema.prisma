@@ -10,3 +10,20 @@ datasource db {
   url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
+
+model Document {
+  id               String     @id @default(cuid())
+  userId           String
+  title            String
+  content          String?
+  coverImage       String?
+  icon             String?
+  isArchived       Boolean
+  isPublished      Boolean
+  parentDocumentId String?    @map("parentDocument")
+  parentDocument   Document?  @relation("ChildDocuments", fields: [parentDocumentId], references: [id])
+  childDocuments   Document[] @relation("ChildDocuments")
+
+  @@index([userId], name: "by_user")
+  @@index([userId, parentDocumentId], name: "by_user_parent")
+}
