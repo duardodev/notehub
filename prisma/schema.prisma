@@ -23,7 +23,4 @@ model Document {
   parentDocumentId String?    @map("parentDocument")
   parentDocument   Document?  @relation("ChildDocuments", fields: [parentDocumentId], references: [id])
   childDocuments   Document[] @relation("ChildDocuments")
-
-  @@index([userId], name: "by_user")
-  @@index([userId, parentDocumentId], name: "by_user_parent")
 }
