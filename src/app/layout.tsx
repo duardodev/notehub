@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter, Lato } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
-import { Header } from '@/app/(home)/components/header';
 import { ptBR } from '@clerk/localizations';
 
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
-const lato = Lato({ weight: '700', variable: '--title-font', subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], display: 'swap' });
+const lato = Lato({ weight: '700', variable: '--title-font', subsets: ['latin'], display: 'swap' });
 
 export const metadata: Metadata = {
   title: {
@@ -19,8 +18,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider localization={ptBR}>
-      <html lang="pt-BR">
-        <body className={`${inter.className} ${lato.variable} antialiased`}>{children}</body>
+      <html lang="pt-BR" className={`${inter.className} ${lato.variable} antialiased`}>
+        <body>{children}</body>
       </html>
     </ClerkProvider>
   );
