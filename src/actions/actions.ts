@@ -1,8 +1,8 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { currentUser } from '@clerk/nextjs';
-import { createDocumentType } from './types';
+import { auth, currentUser } from '@clerk/nextjs';
+import { createDocumentType, getDocumentsType } from './types';
 
 export async function createDocument(data: createDocumentType) {
   const user = await currentUser();
@@ -23,6 +23,26 @@ export async function createDocument(data: createDocumentType) {
     });
 
     return document;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getDocuments() {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error('Not authenticated');
+  }
+
+  try {
+    const documents: getDocumentsType[] = await prisma.document.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return documents;
   } catch (error) {
     console.log(error);
   }

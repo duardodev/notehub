@@ -5,6 +5,7 @@ import { SignOutButton, useUser } from '@clerk/nextjs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
+import { DocumentList } from './document-list';
 import { Item } from './item';
 import {
   IconSquareRoundedPlus,
@@ -72,6 +73,7 @@ export function Sidebar({
             <div>
               <Item icon={IconSettings2} label="Configurações" />
               <Item icon={IconSquareRoundedPlus} label="Novo documento" />
+              <DocumentList />
             </div>
           </div>
         </div>

@@ -1,26 +1,9 @@
-'use client';
-
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { IconSquareRoundedPlus } from '@tabler/icons-react';
-import { useUser } from '@clerk/nextjs';
-import { createDocument } from '../../actions/actions';
-import { toast } from 'sonner';
+import { CreateDocumentButton } from './components/create-document-button';
+import { currentUser } from '@clerk/nextjs';
 
-export default function Documents() {
-  const { user } = useUser();
-
-  async function handleCreateDocument() {
-    try {
-      toast.loading('Criando um novo documento...');
-      await createDocument({ title: 'Sem título' });
-      toast.success('Novo documento criado!', { duration: 2000 });
-    } catch (error) {
-      toast.error('Erro ao criar um novo documento!');
-    } finally {
-      toast.dismiss();
-    }
-  }
+export default async function Documents() {
+  const user = await currentUser();
 
   return (
     <div className="h-full flex flex-col items-center justify-center gap-4">
@@ -30,10 +13,7 @@ export default function Documents() {
         {user ? `${user.firstName}, bem-vindo ao NoteHub!` : 'Bem-vindo ao NoteHub!'}
       </h1>
 
-      <Button onClick={handleCreateDocument} className="gap-2">
-        <IconSquareRoundedPlus size={18} />
-        Criar um documento
-      </Button>
+      <CreateDocumentButton />
     </div>
   );
 }
