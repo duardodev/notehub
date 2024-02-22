@@ -45,30 +45,32 @@ export function Sidebar({
         isMobile && 'w-0'
       )}
     >
-      <div className="bg-background h-full p-3 flex flex-col justify-between">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <Logo />
+      <div className="bg-background h-full flex flex-col justify-between">
+        <div className="space-y-2">
+          <div className="space-y-4 p-3">
+            <div className="flex items-center justify-between">
+              <Logo />
 
-            <Button onClick={handleCollapse} variant={'ghost'} size={'icon'} className="h-8 w-8">
-              <IconLayoutSidebarLeftCollapse size={20} />
+              <Button onClick={handleCollapse} variant={'ghost'} size={'icon'} className="h-8 w-8">
+                <IconLayoutSidebarLeftCollapse size={20} />
+              </Button>
+            </div>
+
+            <Button
+              variant={'outline'}
+              size={'sm'}
+              className="min-w-full relative text-muted-foreground rounded-lg justify-start gap-2"
+            >
+              <IconSearch size={18} />
+              <span>Procurar...</span>
+              <kbd className="ml-auto pointer-events-none absolute right-[0.3rem] h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100">
+                <span className="text-xs">Ctrl+K</span>
+              </kbd>
             </Button>
           </div>
 
-          <Button
-            variant={'outline'}
-            size={'sm'}
-            className="min-w-full relative text-muted-foreground rounded-lg justify-start gap-2"
-          >
-            <IconSearch size={18} />
-            <span>Procurar...</span>
-            <kbd className="ml-auto pointer-events-none absolute right-[0.3rem] h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100">
-              <span className="text-xs">Ctrl+K</span>
-            </kbd>
-          </Button>
-
           <div className="space-y-1">
-            <h2 className="font-medium text-muted-foreground text-sm">Menu</h2>
+            <h2 className="font-medium text-muted-foreground text-sm px-3">Menu</h2>
 
             <div>
               <Item icon={IconSettings2} label="Configurações" />
@@ -81,9 +83,9 @@ export function Sidebar({
         <div className="space-y-4">
           <Item icon={IconTrash} label="Lixeira" />
 
-          <div className="h-px bg-border" />
+          <div className="h-px bg-border mx-3" />
 
-          <div className="flex items-center justify-between gap-2">
+          <div className="px-3 pb-3 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={user?.imageUrl} />
