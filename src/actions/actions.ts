@@ -1,24 +1,24 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { auth, currentUser } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs';
 import { createDocumentType, getDocumentsType } from './types';
 
-export async function createDocument(data: createDocumentType) {
-  const user = await currentUser();
+export async function createDocument({ title, parentDocumentId }: createDocumentType) {
+  const { userId } = auth();
 
-  if (!user) {
+  if (!userId) {
     throw new Error('Not authenticated');
   }
 
   try {
     const document = await prisma.document.create({
       data: {
-        userId: user?.id,
-        title: data.title,
+        userId,
+        title,
+        parentDocumentId,
         isArchived: false,
         isPublished: false,
-        parentDocumentId: data.parentDocumentId,
       },
     });
 
@@ -36,9 +36,32 @@ export async function getDocuments() {
   }
 
   try {
-    const documents: getDocumentsType[] = await prisma.document.findMany({
+    const documents = await prisma.document.findMany({
       where: {
         userId: userId,
+        parentDocumentId: null,
+      },
+    });
+
+    return documents;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getChildDocuments({ parentDocumentId }: getDocumentsType) {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error('Not authenticated');
+  }
+
+  try {
+    const documents = await prisma.document.findMany({
+      where: {
+        userId,
+        parentDocumentId,
+        isArchived: false,
       },
     });
 

@@ -46,7 +46,7 @@ export function Sidebar({
       )}
     >
       <div className="bg-background h-full flex flex-col justify-between">
-        <div className="space-y-2">
+        <div className="space-y-1">
           <div className="space-y-4 p-3">
             <div className="flex items-center justify-between">
               <Logo />
@@ -69,12 +69,11 @@ export function Sidebar({
             </Button>
           </div>
 
-          <div className="space-y-1">
-            <h2 className="font-medium text-muted-foreground text-sm px-3">Menu</h2>
+          <div>
+            <Item icon={IconSettings2} label="Configurações" />
+            <Item icon={IconSquareRoundedPlus} label="Novo documento" />
 
-            <div>
-              <Item icon={IconSettings2} label="Configurações" />
-              <Item icon={IconSquareRoundedPlus} label="Novo documento" />
+            <div className="my-2">
               <DocumentList />
             </div>
           </div>
@@ -83,7 +82,7 @@ export function Sidebar({
         <div className="space-y-4">
           <Item icon={IconTrash} label="Lixeira" />
 
-          <div className="h-px bg-border mx-3" />
+          <div className="h-[2px] bg-border mx-3" />
 
           <div className="px-3 pb-3 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">

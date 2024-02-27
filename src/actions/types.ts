@@ -6,8 +6,7 @@ const createDocumetSchema = z.object({
 });
 
 const getDocumentsSchema = z.object({
-  id: z.string(),
-  title: z.string(),
+  parentDocumentId: z.string().optional(),
 });
 
 export type createDocumentType = z.infer<typeof createDocumetSchema>;
