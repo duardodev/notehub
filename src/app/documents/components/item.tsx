@@ -6,6 +6,7 @@ import { createDocument } from '@/actions/actions';
 import { Button } from '@/components/ui/button';
 import { IconChevronDown, IconChevronRight, IconPlus, Icon } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
+import { useCreateDocument } from '../../../hooks/use-create-document';
 import { toast } from 'sonner';
 
 interface ItemProps {
@@ -29,43 +30,12 @@ export function Item({
   handleExpand,
   onClick,
 }: ItemProps) {
-  const queryClient = useQueryClient();
   const ChevronIcon = expanded ? IconChevronDown : IconChevronRight;
+  const { handleCreateChildDocument } = useCreateDocument(id, expanded, handleExpand);
 
   function onExpand(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.stopPropagation();
     handleExpand?.();
-  }
-
-  const { mutateAsync } = useMutation({
-    mutationFn: async () => {
-      await createDocument({ title: 'Sem título filho', parentDocumentId: id });
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['get-child-documents', id],
-      });
-
-      toast.success('Novo documento criado!', { duration: 2000 });
-
-      if (!expanded) {
-        handleExpand?.();
-      }
-    },
-  });
-
-  async function handleCreateChildDocument(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.stopPropagation();
-    if (!id) return;
-
-    try {
-      toast.loading('Criando um novo documento...');
-      await mutateAsync();
-    } catch (error) {
-      toast.error('Erro ao criar um novo documento!');
-    } finally {
-      toast.dismiss();
-    }
   }
 
   return (

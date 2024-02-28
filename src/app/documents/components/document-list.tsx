@@ -1,21 +1,14 @@
 'use client';
 
-import { useState } from 'react';
 import { Item } from './item';
 import { ChildDocuments } from './child-documents';
 import { useQuery } from '@tanstack/react-query';
+import { useExpand } from '@/hooks/use-expand';
 import { getDocuments } from '@/actions/actions';
 import { IconFile } from '@tabler/icons-react';
 
 export function DocumentList() {
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
-
-  function handleExpand(documentId: string) {
-    setExpanded(prevExpanded => ({
-      ...prevExpanded,
-      [documentId]: !prevExpanded[documentId],
-    }));
-  }
+  const { expanded, handleExpand } = useExpand();
 
   const { data: documents } = useQuery({
     queryKey: ['get-documents'],
