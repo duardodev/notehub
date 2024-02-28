@@ -40,6 +40,10 @@ export async function getDocuments() {
       where: {
         userId: userId,
         parentDocumentId: null,
+        isArchived: false,
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
 
@@ -62,6 +66,9 @@ export async function getChildDocuments({ parentDocumentId }: getDocumentsType) 
         userId,
         parentDocumentId,
         isArchived: false,
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
 
