@@ -10,10 +10,14 @@ import { IconFile } from '@tabler/icons-react';
 export function DocumentList() {
   const { expanded, handleExpand } = useExpand();
 
-  const { data: documents } = useQuery({
+  const { data: documents, isLoading } = useQuery({
     queryKey: ['get-documents'],
     queryFn: () => getDocuments(),
   });
+
+  if (isLoading) {
+    return <Item.Skeleton />;
+  }
 
   return (
     <>
@@ -27,7 +31,7 @@ export function DocumentList() {
             handleExpand={() => handleExpand(document.id)}
           />
 
-          {expanded[document.id] && <ChildDocuments parentDocumentId={document.id} />}
+          {expanded[document.id] && <ChildDocuments parentDocumentId={document.id} level={1} />}
         </div>
       ))}
     </>

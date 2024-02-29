@@ -1,16 +1,15 @@
 'use client';
 
 import React from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createDocument } from '@/actions/actions';
 import { Button } from '@/components/ui/button';
+import { useCreateDocument } from '@/hooks/use-create-document';
 import { IconChevronDown, IconChevronRight, IconPlus, Icon } from '@tabler/icons-react';
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { useCreateDocument } from '../../../hooks/use-create-document';
-import { toast } from 'sonner';
 
 interface ItemProps {
   id?: string;
+  level?: number;
   icon: Icon;
   documentIcon?: string;
   label: string;
@@ -22,6 +21,7 @@ interface ItemProps {
 
 export function Item({
   id,
+  level = 0,
   icon: Icon,
   documentIcon,
   label,
@@ -43,8 +43,9 @@ export function Item({
       onClick={onClick}
       variant={'ghost'}
       size={'sm'}
+      style={{ paddingLeft: level ? `${level * 16 + 16}px` : '16px' }}
       className={cn(
-        'group/item min-w-full h-7 pl-4 rounded-none gap-1 justify-start',
+        'group/item w-full h-7 pr-4 rounded-none gap-1 justify-start',
         !!id && 'text-foreground/70',
         active && 'bg-accent text-accent-foreground'
       )}
@@ -59,7 +60,11 @@ export function Item({
         </div>
       )}
 
-      {documentIcon ? <div className="text-[18px]">{documentIcon}</div> : <Icon size={18} />}
+      {documentIcon ? (
+        <div className="shrink-0 text-[18px]">{documentIcon}</div>
+      ) : (
+        <Icon className="shrink-0 h-[18px] w-[18px]" />
+      )}
 
       <span className="ml-[2px] truncate">{label}</span>
 
@@ -75,3 +80,15 @@ export function Item({
     </Button>
   );
 }
+
+Item.Skeleton = function ItemSkeleton({ level }: { level?: number }) {
+  return (
+    <div
+      style={{ paddingLeft: level ? `${level * 16 + 26}px` : '16px' }}
+      className="flex gap-x-2 py-[3px]"
+    >
+      <Skeleton className="h-4 w-4" />
+      <Skeleton className="h-4 w-[60%]" />
+    </div>
+  );
+};
