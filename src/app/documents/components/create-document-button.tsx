@@ -1,11 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useCreateDocument } from '@/hooks/use-create-document';
+import { useDocument } from '@/hooks/use-document';
 import { IconSquareRoundedPlus } from '@tabler/icons-react';
 
 export function CreateDocumentButton() {
-  const { handleCreateDocument } = useCreateDocument();
+  const { handleCreateDocument } = useDocument();
 
   return (
     <Button onClick={handleCreateDocument} className="gap-2">

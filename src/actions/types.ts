@@ -6,8 +6,13 @@ const createDocumetSchema = z.object({
 });
 
 const getDocumentsSchema = z.object({
-  parentDocumentId: z.string().optional(),
+  parentDocumentId: z.string(),
+});
+
+const archiveDocumentSchema = z.object({
+  documentId: z.string().optional(),
 });
 
 export type createDocumentType = z.infer<typeof createDocumetSchema>;
 export type getDocumentsType = z.infer<typeof getDocumentsSchema>;
+export type archiveDocumentType = z.infer<typeof archiveDocumentSchema>;

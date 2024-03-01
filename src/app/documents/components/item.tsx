@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { useCreateDocument } from '@/hooks/use-create-document';
-import { IconChevronDown, IconChevronRight, IconPlus, Icon } from '@tabler/icons-react';
+import { useDocument } from '@/hooks/use-document';
+import { IconChevronDown, IconChevronRight, IconPlus, Icon, IconTrashX } from '@tabler/icons-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
@@ -31,7 +31,11 @@ export function Item({
   onClick,
 }: ItemProps) {
   const ChevronIcon = expanded ? IconChevronDown : IconChevronRight;
-  const { handleCreateChildDocument } = useCreateDocument(id, expanded, handleExpand);
+  const { handleCreateChildDocument, handleArchiveDocument } = useDocument(
+    id,
+    expanded,
+    handleExpand
+  );
 
   function onExpand(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.stopPropagation();
@@ -68,15 +72,27 @@ export function Item({
 
       <span className="ml-[2px] truncate">{label}</span>
 
-      {!!id && (
-        <div
-          role="button"
-          onClick={handleCreateChildDocument}
-          className="rounded-sm ml-auto opacity-0 group-hover/item:opacity-100 hover:bg-input ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
-        >
-          <IconPlus className="h-4 w-4 text-muted-foreground" />
-        </div>
-      )}
+      <div className="ml-auto flex items-center">
+        {!!id && (
+          <div
+            role="button"
+            onClick={handleCreateChildDocument}
+            className="rounded-sm mr-1 opacity-0 group-hover/item:opacity-100 hover:bg-input ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+          >
+            <IconPlus className="h-4 w-4 text-muted-foreground" />
+          </div>
+        )}
+
+        {!!id && (
+          <div
+            role="button"
+            onClick={handleArchiveDocument}
+            className="rounded-sm p-px opacity-0 group-hover/item:opacity-100 hover:bg-input ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+          >
+            <IconTrashX className="h-4 w-4 text-muted-foreground" />
+          </div>
+        )}
+      </div>
     </Button>
   );
 }

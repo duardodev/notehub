@@ -1,10 +1,10 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createDocument } from '@/actions/actions';
+import { archiveDocument, createDocument } from '@/actions/actions';
 import { toast } from 'sonner';
 
-export const useCreateDocument = (id?: string, expanded?: boolean, handleExpand?: () => void) => {
+export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () => void) => {
   const queryClient = useQueryClient();
 
   const { mutateAsync: createDocumentFn } = useMutation({
@@ -35,12 +35,29 @@ export const useCreateDocument = (id?: string, expanded?: boolean, handleExpand?
     },
   });
 
+  const { mutateAsync: archiveDocumentFn } = useMutation({
+    mutationFn: async () => {
+      await archiveDocument({ documentId: id });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['get-documents'],
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: ['get-child-documents'],
+      });
+
+      toast.success('Documento movido para lixeira!', { duration: 2000 });
+    },
+  });
+
   async function handleCreateDocument() {
     try {
       toast.loading('Criando um novo documento...');
       await createDocumentFn();
       toast.success('Novo documento criado!', { duration: 2000 });
-    } catch (error) {
+    } catch {
       toast.error('Erro ao criar um novo documento!');
     } finally {
       toast.dismiss();
@@ -54,8 +71,22 @@ export const useCreateDocument = (id?: string, expanded?: boolean, handleExpand?
     try {
       toast.loading('Criando um novo documento...');
       await createChildDocumentFn();
-    } catch (error) {
+    } catch {
       toast.error('Erro ao criar um novo documento!');
+    } finally {
+      toast.dismiss();
+    }
+  }
+
+  async function handleArchiveDocument(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    event.stopPropagation();
+    if (!id) return;
+
+    try {
+      toast.loading('Movendo documento para lixeira...');
+      await archiveDocumentFn();
+    } catch {
+      toast.error('Erro ao mover documento para lixeira!');
     } finally {
       toast.dismiss();
     }
@@ -64,5 +95,6 @@ export const useCreateDocument = (id?: string, expanded?: boolean, handleExpand?
   return {
     handleCreateDocument,
     handleCreateChildDocument,
+    handleArchiveDocument,
   };
 };

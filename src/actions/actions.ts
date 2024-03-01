@@ -2,7 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { auth } from '@clerk/nextjs';
-import { createDocumentType, getDocumentsType } from './types';
+import { archiveDocumentType, createDocumentType, getDocumentsType } from './types';
 
 export async function createDocument({ title, parentDocumentId }: createDocumentType) {
   const { userId } = auth();
@@ -73,6 +73,77 @@ export async function getChildDocuments({ parentDocumentId }: getDocumentsType) 
     });
 
     return documents;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function archiveDocument({ documentId }: archiveDocumentType) {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error('Not authenticated');
+  }
+
+  try {
+    const existingDocument = await prisma.document.findUnique({
+      where: {
+        id: documentId,
+      },
+    });
+
+    if (!existingDocument) {
+      throw new Error('Not found');
+    }
+
+    if (existingDocument.userId !== userId) {
+      throw new Error('Unauthorized');
+    }
+
+    const document = await prisma.document.update({
+      where: {
+        id: documentId,
+      },
+      data: {
+        isArchived: true,
+      },
+    });
+
+    await archiveChildDocuments(documentId);
+
+    return document;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function archiveChildDocuments(parentDocumentId?: string) {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error('Not authenticated');
+  }
+
+  try {
+    const children = await prisma.document.findMany({
+      where: {
+        userId,
+        parentDocumentId,
+      },
+    });
+
+    for (const child of children) {
+      await prisma.document.update({
+        where: {
+          id: child.id,
+        },
+        data: {
+          isArchived: true,
+        },
+      });
+
+      await archiveChildDocuments(child.id);
+    }
   } catch (error) {
     console.log(error);
   }
