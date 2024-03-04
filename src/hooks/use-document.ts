@@ -49,6 +49,10 @@ export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () =
       });
 
       toast.success('Documento movido para lixeira!', { duration: 2000 });
+
+      await queryClient.invalidateQueries({
+        queryKey: ['get-archived-documents'],
+      });
     },
   });
 

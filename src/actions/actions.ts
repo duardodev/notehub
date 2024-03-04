@@ -38,7 +38,7 @@ export async function getDocuments() {
   try {
     const documents = await prisma.document.findMany({
       where: {
-        userId: userId,
+        userId,
         parentDocumentId: null,
         isArchived: false,
       },
@@ -88,6 +88,7 @@ export async function archiveDocument({ documentId }: archiveDocumentType) {
   try {
     const existingDocument = await prisma.document.findUnique({
       where: {
+        userId,
         id: documentId,
       },
     });
@@ -102,6 +103,7 @@ export async function archiveDocument({ documentId }: archiveDocumentType) {
 
     const document = await prisma.document.update({
       where: {
+        userId,
         id: documentId,
       },
       data: {
@@ -147,4 +149,24 @@ async function archiveChildDocuments(parentDocumentId?: string) {
   } catch (error) {
     console.log(error);
   }
+}
+
+export async function getArchivedDocuments() {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error('Not authenticated');
+  }
+
+  const documents = prisma.document.findMany({
+    where: {
+      userId,
+      isArchived: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return documents;
 }
