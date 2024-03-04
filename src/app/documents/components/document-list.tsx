@@ -4,7 +4,7 @@ import { Item } from './item';
 import { ChildDocuments } from './child-documents';
 import { useQuery } from '@tanstack/react-query';
 import { useExpand } from '@/hooks/use-expand';
-import { getDocuments } from '@/actions/actions';
+import { getDocuments } from '@/actions/get-documents';
 import { IconFile } from '@tabler/icons-react';
 
 export function DocumentList() {

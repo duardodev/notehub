@@ -3,7 +3,7 @@
 import { Item } from './item';
 import { useQuery } from '@tanstack/react-query';
 import { useExpand } from '@/hooks/use-expand';
-import { getChildDocuments } from '@/actions/actions';
+import { getChildDocuments } from '@/actions/get-documents';
 import { IconFile } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
 

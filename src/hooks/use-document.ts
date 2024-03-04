@@ -1,7 +1,8 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { archiveDocument, createDocument } from '@/actions/actions';
+import { createDocument } from '@/actions/create-document';
+import { archiveDocument } from '@/actions/archive-document';
 import { toast } from 'sonner';
 
 export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () => void) => {
@@ -37,7 +38,7 @@ export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () =
 
   const { mutateAsync: archiveDocumentFn } = useMutation({
     mutationFn: async () => {
-      await archiveDocument({ documentId: id });
+      await archiveDocument({ id });
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({

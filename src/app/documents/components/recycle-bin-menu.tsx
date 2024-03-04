@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { getArchivedDocuments } from '@/actions/actions';
+import { getArchivedDocuments } from '@/actions/get-documents';
 import { useRecycleBinStore } from '@/store/use-recycle-bin';
 import {
   CommandDialog,
