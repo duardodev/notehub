@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createDocument } from '@/actions/create-document';
 import { archiveDocument } from '@/actions/archive-document';
 import { toast } from 'sonner';
+import { deleteDocument } from '@/actions/delete-document';
 
 export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () => void) => {
   const queryClient = useQueryClient();
@@ -57,6 +58,17 @@ export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () =
     },
   });
 
+  const { mutateAsync: deleteDocumentFn } = useMutation({
+    mutationFn: deleteDocument,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['get-archived-documents'],
+      });
+
+      toast.success('Documento deletado!', { duration: 2000 });
+    },
+  });
+
   async function handleCreateDocument() {
     try {
       toast.loading('Criando um novo documento...');
@@ -97,9 +109,25 @@ export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () =
     }
   }
 
+  async function handleDeleteDocument(id?: string) {
+    if (!id) return;
+
+    try {
+      toast.loading('Deletando documento...');
+      await deleteDocumentFn({
+        id,
+      });
+    } catch {
+      toast.error('Erro ao deletar documento!');
+    } finally {
+      toast.dismiss();
+    }
+  }
+
   return {
     handleCreateDocument,
     handleCreateChildDocument,
     handleArchiveDocument,
+    handleDeleteDocument,
   };
 };

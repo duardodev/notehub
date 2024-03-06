@@ -12,10 +12,13 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { IconFile } from '@tabler/icons-react';
+import { IconTrash } from '@tabler/icons-react';
+import { useDocument } from '@/hooks/use-document';
 
 export function RecycleBinMenu() {
   const menuIsOpen = useRecycleBinStore(state => state.menuIsOpen);
   const closeMenu = useRecycleBinStore(state => state.closeMenu);
+  const { handleDeleteDocument } = useDocument();
 
   const { data: documents } = useQuery({
     queryKey: ['get-archived-documents'],
@@ -33,10 +36,18 @@ export function RecycleBinMenu() {
               {document.icon ? (
                 <div className="shrink-0 text-[18px]">{document.icon}</div>
               ) : (
-                <IconFile className="shrink-0 h-[18px] w-[18px]" />
+                <IconFile className="h-[18px] w-[18px] shrink-0" />
               )}
 
-              <span className="ml-1">{document.title}</span>
+              <span className="ml-[6px]">{document.title}</span>
+
+              <div
+                role="button"
+                onClick={() => handleDeleteDocument(document.id)}
+                className="ml-auto p-1 rounded-sm hover:bg-input ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+              >
+                <IconTrash className="h-[18px] w-[18px] shrink-0" />
+              </div>
             </CommandItem>
           ))}
         </CommandGroup>
