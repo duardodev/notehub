@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 
-type recycleBinStore = {
+type trashBoxStore = {
   menuIsOpen: boolean;
   openMenu: () => void;
   closeMenu: () => void;
 };
 
-export const useRecycleBinStore = create<recycleBinStore>((set, get) => ({
+export const useTrashBox = create<trashBoxStore>((set, get) => ({
   menuIsOpen: false,
   openMenu: () => set({ menuIsOpen: true }),
   closeMenu: () => set({ menuIsOpen: false }),

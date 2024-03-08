@@ -4,7 +4,7 @@ import { ClerkLoading, ClerkLoaded } from '@clerk/nextjs';
 import { IconLoader2 } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import { Navigation } from './components/navigation';
-import { RecycleBinMenu } from './components/recycle-bin-menu';
+import { TrashBox } from './components/trash-box';
 
 export const metadata: Metadata = {
   title: 'Documentos',
@@ -24,7 +24,7 @@ export default function DocumentsLayout({ children }: { children: ReactNode }) {
           <Navigation />
 
           <main className="w-screen h-full flex-1 overflow-y-auto absolute md:static">
-            <RecycleBinMenu />
+            <TrashBox />
             {children}
           </main>
         </div>

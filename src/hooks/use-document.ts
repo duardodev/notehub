@@ -5,6 +5,7 @@ import { createDocument } from '@/actions/create-document';
 import { archiveDocument } from '@/actions/archive-document';
 import { toast } from 'sonner';
 import { deleteDocument } from '@/actions/delete-document';
+import { restoreDocument } from '@/actions/restore-document';
 
 export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () => void) => {
   const queryClient = useQueryClient();
@@ -69,6 +70,25 @@ export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () =
     },
   });
 
+  const { mutateAsync: restoreDocumentFn } = useMutation({
+    mutationFn: restoreDocument,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['get-archived-documents'],
+      });
+
+      toast.success('Documento restaurado!', { duration: 2000 });
+
+      queryClient.invalidateQueries({
+        queryKey: ['get-documents'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['get-child-documents'],
+      });
+    },
+  });
+
   async function handleCreateDocument() {
     try {
       toast.loading('Criando um novo documento...');
@@ -124,10 +144,26 @@ export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () =
     }
   }
 
+  async function handleRestoreDocument(id?: string) {
+    if (!id) return;
+
+    try {
+      toast.loading('Restaurando documento...');
+      await restoreDocumentFn({
+        id,
+      });
+    } catch {
+      toast.error('Erro ao restaurar o documento!');
+    } finally {
+      toast.dismiss();
+    }
+  }
+
   return {
     handleCreateDocument,
     handleCreateChildDocument,
     handleArchiveDocument,
     handleDeleteDocument,
+    handleRestoreDocument,
   };
 };

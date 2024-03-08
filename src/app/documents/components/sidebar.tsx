@@ -5,7 +5,7 @@ import { SignOutButton, useUser } from '@clerk/nextjs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
-import { useRecycleBinStore } from '@/store/use-recycle-bin';
+import { useTrashBox } from '@/store/use-trash-box';
 import { DocumentList } from './document-list';
 import { Item } from './item';
 import {
@@ -36,7 +36,7 @@ export function Sidebar({
   handleResetWidth,
 }: SidebarProps) {
   const { user } = useUser();
-  const openMenu = useRecycleBinStore(state => state.openMenu);
+  const openMenu = useTrashBox(state => state.openMenu);
 
   return (
     <aside
