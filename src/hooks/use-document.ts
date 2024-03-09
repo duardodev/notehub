@@ -3,59 +3,46 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createDocument } from '@/actions/create-document';
 import { archiveDocument } from '@/actions/archive-document';
-import { toast } from 'sonner';
 import { deleteDocument } from '@/actions/delete-document';
 import { restoreDocument } from '@/actions/restore-document';
+import { toast } from 'sonner';
 
-export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () => void) => {
+export const useDocument = () => {
   const queryClient = useQueryClient();
 
   const { mutateAsync: createDocumentFn } = useMutation({
     mutationFn: async () => {
       await createDocument({ title: 'Sem título' });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ['get-documents'],
       });
+
+      toast.success('Novo documento criado!', { duration: 2000 });
     },
   });
 
   const { mutateAsync: createChildDocumentFn } = useMutation({
-    mutationFn: async () => {
-      await createDocument({ title: 'Sem título filho', parentDocumentId: id });
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['get-child-documents', id],
-      });
-
-      toast.success('Novo documento criado!', { duration: 2000 });
-
-      if (!expanded) {
-        handleExpand?.();
-      }
-    },
+    mutationFn: createDocument,
   });
 
   const { mutateAsync: archiveDocumentFn } = useMutation({
-    mutationFn: async () => {
-      await archiveDocument({ id });
-    },
+    mutationFn: archiveDocument,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ['get-documents'],
       });
 
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ['get-child-documents'],
       });
-
-      toast.success('Documento movido para lixeira!', { duration: 2000 });
 
       await queryClient.invalidateQueries({
         queryKey: ['get-archived-documents'],
       });
+
+      toast.success('Documento movido para lixeira!', { duration: 2000 });
     },
   });
 
@@ -93,7 +80,6 @@ export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () =
     try {
       toast.loading('Criando um novo documento...');
       await createDocumentFn();
-      toast.success('Novo documento criado!', { duration: 2000 });
     } catch {
       toast.error('Erro ao criar um novo documento!');
     } finally {
@@ -101,13 +87,34 @@ export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () =
     }
   }
 
-  async function handleCreateChildDocument(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.stopPropagation();
+  async function handleCreateChildDocument(
+    id?: string,
+    expanded?: boolean,
+    handleExpand?: () => void
+  ) {
     if (!id) return;
 
     try {
       toast.loading('Criando um novo documento...');
-      await createChildDocumentFn();
+      await createChildDocumentFn(
+        {
+          title: 'Sem título filho',
+          parentDocumentId: id,
+        },
+        {
+          onSuccess: async () => {
+            await queryClient.invalidateQueries({
+              queryKey: ['get-child-documents', id],
+            });
+
+            toast.success('Novo documento criado!', { duration: 2000 });
+
+            if (!expanded) {
+              handleExpand?.();
+            }
+          },
+        }
+      );
     } catch {
       toast.error('Erro ao criar um novo documento!');
     } finally {
@@ -115,13 +122,14 @@ export const useDocument = (id?: string, expanded?: boolean, handleExpand?: () =
     }
   }
 
-  async function handleArchiveDocument(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.stopPropagation();
+  async function handleArchiveDocument(id?: string) {
     if (!id) return;
 
     try {
       toast.loading('Movendo documento para lixeira...');
-      await archiveDocumentFn();
+      await archiveDocumentFn({
+        id,
+      });
     } catch {
       toast.error('Erro ao mover documento para lixeira!');
     } finally {
