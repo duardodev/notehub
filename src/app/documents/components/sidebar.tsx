@@ -1,16 +1,16 @@
 'use client';
 
 import { RefObject } from 'react';
-import { SignOutButton, useUser } from '@clerk/nextjs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { SignOutButton, useUser } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
 import { useTrashBox } from '@/store/use-trash-box';
 import { DocumentList } from './document-list';
+import { Setting } from './setting';
 import { Item } from './item';
 import {
   IconSquareRoundedPlus,
-  IconSettings2,
   IconTrash,
   IconSearch,
   IconLogout,
@@ -72,7 +72,7 @@ export function Sidebar({
           </div>
 
           <div>
-            <Item icon={IconSettings2} label="Configurações" />
+            <Setting />
             <Item icon={IconSquareRoundedPlus} label="Novo documento" />
 
             <div className="my-2">
