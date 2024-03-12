@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Lato } from 'next/font/google';
-import { ReactQueryClientProvider } from '@/lib/react-query';
+import { ReactQueryClientProvider } from '@/lib/query-client';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ptBR } from '@clerk/localizations';
 import { Toaster } from 'sonner';
