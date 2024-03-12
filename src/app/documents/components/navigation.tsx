@@ -1,15 +1,17 @@
 'use client';
 
 import { ElementRef, useEffect, useRef, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sidebar } from './sidebar';
+import { Navbar } from './navbar';
 
 import { IconLayoutSidebarLeftExpand } from '@tabler/icons-react';
 import { useMediaQuery } from 'usehooks-ts';
 import { cn } from '@/lib/utils';
 
 export function Navigation() {
+  const params = useParams();
   const pathname = usePathname();
   const isMobile = useMediaQuery('(max-width: 768px)');
 
@@ -114,13 +116,22 @@ export function Navigation() {
           isMobile && 'left-0 w-full'
         )}
       >
-        <nav className="p-3 w-full">
-          {isCollapsed && (
-            <Button onClick={handleResetWidth} variant={'ghost'} size={'icon'} className="h-8 w-8">
-              <IconLayoutSidebarLeftExpand size={20} />
-            </Button>
-          )}
-        </nav>
+        {!!params.documentId ? (
+          <Navbar isCollapsed={isCollapsed} handleResetWidth={handleResetWidth} />
+        ) : (
+          <nav className="w-full px-3 py-3.5">
+            {isCollapsed && (
+              <Button
+                onClick={handleResetWidth}
+                variant={'ghost'}
+                size={'icon'}
+                className="h-7 w-7"
+              >
+                <IconLayoutSidebarLeftExpand size={20} />
+              </Button>
+            )}
+          </nav>
+        )}
       </div>
     </>
   );

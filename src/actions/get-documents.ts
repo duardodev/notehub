@@ -5,10 +5,11 @@ import { auth } from '@clerk/nextjs';
 import { z } from 'zod';
 
 const getDocumentsSchema = z.object({
+  id: z.string().optional(),
   parentDocumentId: z.string().optional(),
 });
 
-type getChildDocumentsType = z.infer<typeof getDocumentsSchema>;
+type getDocumentsType = z.infer<typeof getDocumentsSchema>;
 
 export async function getDocuments() {
   const { userId } = auth();
@@ -35,7 +36,7 @@ export async function getDocuments() {
   }
 }
 
-export async function getChildDocuments({ parentDocumentId }: getChildDocumentsType) {
+export async function getChildDocuments({ parentDocumentId }: getDocumentsType) {
   const { userId } = auth();
 
   if (!userId) {
@@ -78,4 +79,21 @@ export async function getArchivedDocuments() {
   });
 
   return documents;
+}
+
+export async function getDocumentById({ id }: getDocumentsType) {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error('Not authenticated');
+  }
+
+  const document = prisma.document.findUnique({
+    where: {
+      id,
+      userId,
+    },
+  });
+
+  return document;
 }
