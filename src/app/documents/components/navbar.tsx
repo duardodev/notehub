@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { getDocumentById } from '@/actions/get-documents';
 import { IconLayoutSidebarLeftExpand } from '@tabler/icons-react';
+import { ThemeToggle } from '@/components/theme-toogle';
 
 interface NavbarProps {
   isCollapsed: boolean;
@@ -31,12 +32,16 @@ export function Navbar({ isCollapsed, handleResetWidth }: NavbarProps) {
   return (
     <nav className="w-full p-4 flex items-center gap-x-3">
       {isCollapsed && (
-        <Button onClick={handleResetWidth} variant={'ghost'} size={'icon'} className="h-7 w-7">
+        <Button onClick={handleResetWidth} variant={'ghost'} size={'icon'} className="h-8 w-8">
           <IconLayoutSidebarLeftExpand size={20} />
         </Button>
       )}
 
       <h1 className="text-sm truncate font-medium">{document?.title}</h1>
+
+      <div className="ml-auto">
+        <ThemeToggle />
+      </div>
     </nav>
   );
 }

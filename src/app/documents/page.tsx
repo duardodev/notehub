@@ -7,7 +7,23 @@ export default async function Documents() {
 
   return (
     <div className="h-full flex flex-col items-center justify-center gap-4">
-      <Image src="/paper-documents.svg" alt="Documents" width={320} height={320} />
+      <Image
+        src="/engineer.svg"
+        alt="Documents"
+        priority
+        width={320}
+        height={320}
+        className="dark:hidden mb-2"
+      />
+
+      <Image
+        src="/engineer-dark.svg"
+        alt="Documents"
+        priority
+        width={320}
+        height={320}
+        className="hidden dark:block"
+      />
 
       <h1 className="text-lg font-medium">
         {user ? `${user.firstName}, bem-vindo ao NoteHub!` : 'Bem-vindo ao NoteHub!'}

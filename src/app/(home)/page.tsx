@@ -5,6 +5,7 @@ import { ClerkLoading, ClerkLoaded, SignedOut, SignInButton, SignedIn } from '@c
 import { Button } from '@/components/ui/button';
 import { IconLoader2 } from '@tabler/icons-react';
 import { LogIn } from 'lucide-react';
+import { Illustrations } from './components/illustrations';
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -31,36 +32,26 @@ export default function Home() {
 
         <ClerkLoaded>
           <SignedOut>
-            <SignInButton redirectUrl="/documents" mode="modal">
-              <Button className="gap-2 sm:h-11 sm:px-6 sm:text-base">
+            <Button className="gap-2 sm:h-11 sm:px-6 sm:text-base" asChild>
+              <SignInButton redirectUrl="/documents" mode="modal">
                 Entrar
                 <LogIn size={20} />
-              </Button>
-            </SignInButton>
+              </SignInButton>
+            </Button>
           </SignedOut>
 
           <SignedIn>
-            <Link href="/documents">
-              <Button className="gap-3 rounded-sm sm:px-6 sm:text-base">
+            <Button className="gap-3 rounded-sm sm:px-6 sm:text-base" asChild>
+              <Link href="/documents">
                 Entrar
                 <LogIn size={20} />
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </SignedIn>
         </ClerkLoaded>
       </div>
 
-      <div className="flex items-center justify-center gap-48">
-        <Image
-          src="/work-from-home.svg"
-          alt="Documents"
-          width={380}
-          height={380}
-          className="hidden lg:block"
-        />
-
-        <Image src="/paper-documents.svg" alt="Documents" width={380} height={380} />
-      </div>
+      <Illustrations />
     </div>
   );
 }

@@ -2,10 +2,9 @@
 
 import { useUser, SignedIn, UserButton } from '@clerk/nextjs';
 
-import { Button } from '../../../components/ui/button';
 import { Logo } from '../../../components/logo';
+import { ThemeToggle } from '@/components/theme-toogle';
 import { IconLoader2 } from '@tabler/icons-react';
-import { SunMedium } from 'lucide-react';
 
 export function Header() {
   const { isLoaded } = useUser();
@@ -23,9 +22,7 @@ export function Header() {
           <IconLoader2 className="animate-spin" size={24} />
         )}
 
-        <Button variant={'outline'} size={'icon'}>
-          <SunMedium size={22} />
-        </Button>
+        <ThemeToggle />
       </div>
     </header>
   );

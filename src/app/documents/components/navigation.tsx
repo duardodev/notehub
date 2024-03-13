@@ -9,6 +9,7 @@ import { Navbar } from './navbar';
 import { IconLayoutSidebarLeftExpand } from '@tabler/icons-react';
 import { useMediaQuery } from 'usehooks-ts';
 import { cn } from '@/lib/utils';
+import { ThemeToggle } from '@/components/theme-toogle';
 
 export function Navigation() {
   const params = useParams();
@@ -119,17 +120,21 @@ export function Navigation() {
         {!!params.documentId ? (
           <Navbar isCollapsed={isCollapsed} handleResetWidth={handleResetWidth} />
         ) : (
-          <nav className="w-full px-3 py-3.5">
-            {isCollapsed && (
+          <nav className="w-full px-3 py-3.5 flex items-center justify-between gap-10">
+            {isCollapsed ? (
               <Button
                 onClick={handleResetWidth}
                 variant={'ghost'}
                 size={'icon'}
-                className="h-7 w-7"
+                className="h-8 w-8"
               >
                 <IconLayoutSidebarLeftExpand size={20} />
               </Button>
+            ) : (
+              <div />
             )}
+
+            <ThemeToggle />
           </nav>
         )}
       </div>
