@@ -8,8 +8,10 @@ import { UserProfile } from '@clerk/nextjs';
 export function Setting() {
   return (
     <Dialog>
-      <DialogTrigger className="w-full">
-        <Item icon={IconSettings2} label="Configuração" />
+      <DialogTrigger asChild className="w-full">
+        <div>
+          <Item icon={IconSettings2} label="Configuração" />
+        </div>
       </DialogTrigger>
       <DialogContentCustom>
         <UserProfile
