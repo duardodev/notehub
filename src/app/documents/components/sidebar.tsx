@@ -8,8 +8,10 @@ import { DocumentList } from './document-list';
 import { Setting } from './setting';
 import { Item } from './item';
 
-import { SignOutButton, useUser } from '@clerk/nextjs';
+import { useDocument } from '@/hooks/use-document';
 import { useTrashBox } from '@/store/use-trash-box';
+import { SignOutButton, useUser } from '@clerk/nextjs';
+
 import {
   IconSquareRoundedPlus,
   IconTrash,
@@ -36,8 +38,9 @@ export function Sidebar({
   handleMouseDown,
   handleResetWidth,
 }: SidebarProps) {
-  const { user } = useUser();
   const openMenu = useTrashBox(state => state.openMenu);
+  const { handleCreateDocument } = useDocument();
+  const { user } = useUser();
 
   return (
     <aside
@@ -74,7 +77,11 @@ export function Sidebar({
 
           <div>
             <Setting />
-            <Item icon={IconSquareRoundedPlus} label="Novo documento" />
+            <Item
+              onClick={handleCreateDocument}
+              icon={IconSquareRoundedPlus}
+              label="Novo documento"
+            />
 
             <div className="my-2">
               <DocumentList />
