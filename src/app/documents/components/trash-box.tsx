@@ -3,6 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { getArchivedDocuments } from '@/actions/get-documents';
 import { useTrashBox } from '@/store/use-trash-box';
+import { useDocument } from '@/hooks/use-document';
+import { ConfirmationModal } from '@/components/ui/confirmation-modal';
 import {
   CommandDialog,
   CommandEmpty,
@@ -11,9 +13,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
-import { IconArrowBack, IconFile } from '@tabler/icons-react';
-import { IconTrash } from '@tabler/icons-react';
-import { useDocument } from '@/hooks/use-document';
+import { IconArrowBack, IconFile, IconTrash } from '@tabler/icons-react';
 
 export function TrashBox() {
   const menuIsOpen = useTrashBox(state => state.menuIsOpen);
@@ -50,13 +50,14 @@ export function TrashBox() {
                   <IconArrowBack className="h-5 w-5 shrink-0" />
                 </div>
 
-                <div
-                  role="button"
-                  onClick={() => handleDeleteDocument(document.id)}
-                  className="p-1 rounded-sm hover:bg-input ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
-                >
-                  <IconTrash className="h-[18px] w-[18px] shrink-0" />
-                </div>
+                <ConfirmationModal onConfirm={() => handleDeleteDocument(document.id)}>
+                  <div
+                    role="button"
+                    className="p-1 rounded-sm hover:bg-input ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+                  >
+                    <IconTrash className="h-[18px] w-[18px] shrink-0" />
+                  </div>
+                </ConfirmationModal>
               </div>
             </CommandItem>
           ))}
