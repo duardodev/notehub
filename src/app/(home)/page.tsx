@@ -1,11 +1,10 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Metadata } from 'next';
 import { ClerkLoading, ClerkLoaded, SignedOut, SignInButton, SignedIn } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
+import { Illustrations } from './components/illustrations';
 import { IconLoader2 } from '@tabler/icons-react';
 import { LogIn } from 'lucide-react';
-import { Illustrations } from './components/illustrations';
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -32,16 +31,16 @@ export default function Home() {
 
         <ClerkLoaded>
           <SignedOut>
-            <Button className="gap-2 sm:h-11 sm:px-6 sm:text-base" asChild>
-              <SignInButton redirectUrl="/documents" mode="modal">
+            <SignInButton redirectUrl="/documents" mode="modal">
+              <Button className="gap-2 sm:px-5 sm:text-base">
                 Entrar
                 <LogIn size={20} />
-              </SignInButton>
-            </Button>
+              </Button>
+            </SignInButton>
           </SignedOut>
 
           <SignedIn>
-            <Button className="gap-3 rounded-sm sm:px-6 sm:text-base" asChild>
+            <Button className="gap-3 rounded-sm sm:px-5 sm:text-base" asChild>
               <Link href="/documents">
                 Entrar
                 <LogIn size={20} />
