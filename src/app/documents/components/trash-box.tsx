@@ -18,12 +18,17 @@ import { IconArrowBack, IconFile, IconTrash } from '@tabler/icons-react';
 export function TrashBox() {
   const menuIsOpen = useTrashBox(state => state.menuIsOpen);
   const closeMenu = useTrashBox(state => state.closeMenu);
-  const { handleDeleteDocument, handleRestoreDocument } = useDocument();
+  const { handleDeleteDocument, handleRestoreDocument, handleRedirect } = useDocument();
 
   const { data: documents } = useQuery({
     queryKey: ['get-archived-documents'],
     queryFn: () => getArchivedDocuments(),
   });
+
+  function handleSelect(documentId: string) {
+    handleRedirect(documentId);
+    closeMenu();
+  }
 
   return (
     <CommandDialog open={menuIsOpen} onOpenChange={closeMenu}>
@@ -32,7 +37,11 @@ export function TrashBox() {
         <CommandGroup heading="Documentos">
           <CommandEmpty>Nenhum documento encontrado.</CommandEmpty>
           {documents?.map(document => (
-            <CommandItem key={document.id} value={`${document.id}-${document.title}`}>
+            <CommandItem
+              key={document.id}
+              value={`${document.id}-${document.title}`}
+              onSelect={() => handleSelect(document.id)}
+            >
               {document.icon ? (
                 <div className="shrink-0 text-[18px]">{document.icon}</div>
               ) : (

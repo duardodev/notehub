@@ -72,7 +72,9 @@ export const useDocument = () => {
         queryKey: ['get-archived-documents'],
       });
 
-      toast.success('Documento restaurado!', { duration: 2000 });
+      await queryClient.invalidateQueries({
+        queryKey: ['get-document-by-id'],
+      });
 
       queryClient.invalidateQueries({
         queryKey: ['get-documents'],
@@ -81,6 +83,8 @@ export const useDocument = () => {
       queryClient.invalidateQueries({
         queryKey: ['get-child-documents'],
       });
+
+      toast.success('Documento restaurado!', { duration: 2000 });
     },
   });
 
@@ -161,9 +165,11 @@ export const useDocument = () => {
 
     try {
       toast.loading('Deletando documento...');
+
       await deleteDocumentFn({
         id,
       });
+      router.push('/documents');
     } catch {
       toast.error('Erro ao deletar documento!');
     } finally {

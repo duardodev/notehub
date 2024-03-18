@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { getDocumentById } from '@/actions/get-documents';
+import { Banner } from './components/banner';
 
 interface DocumentPageProps {
   params: {
@@ -15,5 +16,10 @@ export default function DocumentPage({ params }: DocumentPageProps) {
     queryFn: () => getDocumentById({ id: params.documentId as string }),
   });
 
-  return <h1 className="mt-20">{document?.title}</h1>;
+  return (
+    <>
+      {document?.isArchived && <Banner documentId={document.id} />}
+      <h1 className="mt-20">{document?.title}</h1>
+    </>
+  );
 }
