@@ -11,7 +11,7 @@ interface ItemProps {
   id?: string;
   level?: number;
   icon: Icon;
-  documentIcon?: string;
+  documentIcon?: string | null;
   label: string;
   active?: boolean;
   expanded?: boolean;

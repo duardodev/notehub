@@ -50,6 +50,7 @@ export function ChildDocuments({ parentDocumentId, level = 0 }: ChildDocumentsPr
           <Item
             id={document.id}
             icon={IconFile}
+            documentIcon={document.icon}
             label={document.title}
             level={level}
             active={params.documentId === document.id}

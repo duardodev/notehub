@@ -30,6 +30,7 @@ export function DocumentList() {
           <Item
             id={document.id}
             icon={IconFile}
+            documentIcon={document.icon}
             label={document.title}
             active={params.documentId === document.id}
             expanded={expanded[document.id]}

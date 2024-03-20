@@ -26,6 +26,7 @@ export default function DocumentPage({ params }: DocumentPageProps) {
           id={document?.id}
           parentDocumentId={document?.parentDocumentId}
           initialTitle={document?.title}
+          initialIcon={document?.icon}
         />
       </div>
     </div>
