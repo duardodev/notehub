@@ -4,26 +4,24 @@ import { ElementRef, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { IconPicker } from './icon-picker';
 import { useDocument } from '@/hooks/use-document';
+import { Document } from '@prisma/client';
 import { IconMoodSmile, IconX } from '@tabler/icons-react';
 import TextareaAutosize from 'react-textarea-autosize';
 
 interface ToolbarProps {
-  id?: string;
-  parentDocumentId?: string | null;
-  initialTitle?: string;
-  initialIcon?: string | null;
+  initialData?: Document | null;
 }
 
-export function Toolbar({ id, parentDocumentId, initialTitle, initialIcon }: ToolbarProps) {
+export function Toolbar({ initialData }: ToolbarProps) {
   const inputRef = useRef<ElementRef<'textarea'>>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(initialTitle);
+  const [title, setTitle] = useState(initialData?.title);
   const { updateDocumentFn } = useDocument();
 
   function enableInput() {
     setIsEditing(true);
     setTimeout(() => {
-      setTitle(initialTitle);
+      setTitle(initialData?.title);
       inputRef.current?.focus();
     }, 0);
   }
@@ -38,37 +36,31 @@ export function Toolbar({ id, parentDocumentId, initialTitle, initialIcon }: Too
   function handleTitleChange(value: string) {
     setTitle(value);
     updateDocumentFn({
-      id,
-      parentDocumentId,
+      ...initialData,
       title: value || 'Sem título',
-      icon: initialIcon,
     });
   }
 
   function handleIconSelect(icon: string) {
     updateDocumentFn({
-      id,
-      parentDocumentId,
-      title: initialTitle,
+      ...initialData,
       icon,
     });
   }
 
   function handleIconRemove() {
     updateDocumentFn({
-      id,
-      parentDocumentId,
-      title: initialTitle,
+      ...initialData,
       icon: null,
     });
   }
 
   return (
     <div className="pl-[58px] group relative">
-      {!!initialIcon ? (
+      {!!initialData?.icon ? (
         <div className="group/icon py-6 flex items-center gap-2">
           <IconPicker onChange={handleIconSelect}>
-            <p className="text-6xl hover:opacity-75 transition">{initialIcon}</p>
+            <p className="text-6xl hover:opacity-75 transition">{initialData?.icon}</p>
           </IconPicker>
 
           <Button
@@ -105,7 +97,7 @@ export function Toolbar({ id, parentDocumentId, initialTitle, initialIcon }: Too
           onClick={enableInput}
           className="text-[#3F3F3F] dark:text-[#CFCFCF] text-5xl font-bold pb-[11.5px] break-words outline-none"
         >
-          {initialTitle}
+          {initialData?.title}
         </div>
       )}
     </div>

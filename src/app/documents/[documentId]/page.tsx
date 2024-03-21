@@ -22,12 +22,7 @@ export default function DocumentPage({ params }: DocumentPageProps) {
       {document?.isArchived && <Banner documentId={document.id} />}
 
       <div className="mt-28 mx-auto md:max-w-3xl lg:max-w-4xl">
-        <Toolbar
-          id={document?.id}
-          parentDocumentId={document?.parentDocumentId}
-          initialTitle={document?.title}
-          initialIcon={document?.icon}
-        />
+        <Toolbar initialData={document} />
       </div>
     </div>
   );

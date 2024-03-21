@@ -13,7 +13,7 @@ const updateDocumentSchema = z.object({
 
 type updateDocumentType = z.infer<typeof updateDocumentSchema>;
 
-export async function updateDocument(data: updateDocumentType) {
+export async function updateDocument({ id, parentDocumentId, ...values }: updateDocumentType) {
   const { userId } = auth();
 
   if (!userId) {
@@ -23,7 +23,7 @@ export async function updateDocument(data: updateDocumentType) {
   try {
     const existingDocument = await prisma.document.findUnique({
       where: {
-        id: data.id,
+        id,
         userId,
       },
     });
@@ -38,13 +38,12 @@ export async function updateDocument(data: updateDocumentType) {
 
     const document = await prisma.document.update({
       where: {
-        id: data.id,
-        parentDocumentId: data.parentDocumentId,
+        id,
+        parentDocumentId,
         userId,
       },
       data: {
-        title: data.title,
-        icon: data.icon,
+        ...values,
       },
     });
 
