@@ -1,10 +1,9 @@
 'use client';
 
 import { ElementRef, useRef, useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateDocument } from '@/actions/update-document';
 import { Button } from '@/components/ui/button';
 import { IconPicker } from './icon-picker';
+import { useDocument } from '@/hooks/use-document';
 import { IconMoodSmile, IconX } from '@tabler/icons-react';
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -16,26 +15,10 @@ interface ToolbarProps {
 }
 
 export function Toolbar({ id, parentDocumentId, initialTitle, initialIcon }: ToolbarProps) {
+  const inputRef = useRef<ElementRef<'textarea'>>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(initialTitle);
-  const inputRef = useRef<ElementRef<'textarea'>>(null);
-  const queryClient = useQueryClient();
-
-  const { mutateAsync: updateDocumentFn } = useMutation({
-    mutationFn: updateDocument,
-    onMutate: newData => {
-      queryClient.setQueryData(['get-document-by-id', newData.id], newData);
-
-      queryClient.setQueryData(['get-documents'], (oldData: any[]) =>
-        oldData?.map(data => (data.id === newData.id ? newData : data))
-      );
-
-      queryClient.setQueryData(
-        ['get-child-documents', newData.parentDocumentId],
-        (oldData: any[]) => oldData?.map(data => (data.id === newData.id ? newData : data))
-      );
-    },
-  });
+  const { updateDocumentFn } = useDocument();
 
   function enableInput() {
     setIsEditing(true);
@@ -45,7 +28,14 @@ export function Toolbar({ id, parentDocumentId, initialTitle, initialIcon }: Too
     }, 0);
   }
 
-  async function handleTitleChange(value: string) {
+  function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      setIsEditing(false);
+    }
+  }
+
+  function handleTitleChange(value: string) {
     setTitle(value);
     updateDocumentFn({
       id,
@@ -55,7 +45,7 @@ export function Toolbar({ id, parentDocumentId, initialTitle, initialIcon }: Too
     });
   }
 
-  async function handleIconSelect(icon: string) {
+  function handleIconSelect(icon: string) {
     updateDocumentFn({
       id,
       parentDocumentId,
@@ -64,11 +54,13 @@ export function Toolbar({ id, parentDocumentId, initialTitle, initialIcon }: Too
     });
   }
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      setIsEditing(false);
-    }
+  function handleIconRemove() {
+    updateDocumentFn({
+      id,
+      parentDocumentId,
+      title: initialTitle,
+      icon: null,
+    });
   }
 
   return (
@@ -82,6 +74,7 @@ export function Toolbar({ id, parentDocumentId, initialTitle, initialIcon }: Too
           <Button
             size="icon"
             variant="outline"
+            onClick={handleIconRemove}
             className="rounded-full text-muted-foreground opacity-0 group-hover/icon:opacity-100 transition"
           >
             <IconX size={16} />

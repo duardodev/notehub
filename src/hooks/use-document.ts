@@ -6,6 +6,7 @@ import { createDocument } from '@/actions/create-document';
 import { archiveDocument } from '@/actions/archive-document';
 import { deleteDocument } from '@/actions/delete-document';
 import { restoreDocument } from '@/actions/restore-document';
+import { updateDocument } from '@/actions/update-document';
 import { toast } from 'sonner';
 
 export const useDocument = () => {
@@ -85,6 +86,22 @@ export const useDocument = () => {
       });
 
       toast.success('Documento restaurado!', { duration: 2000 });
+    },
+  });
+
+  const { mutateAsync: updateDocumentFn } = useMutation({
+    mutationFn: updateDocument,
+    onMutate: newData => {
+      queryClient.setQueryData(['get-document-by-id', newData.id], newData);
+
+      queryClient.setQueryData(['get-documents'], (oldData: any[]) =>
+        oldData?.map(data => (data.id === newData.id ? newData : data))
+      );
+
+      queryClient.setQueryData(
+        ['get-child-documents', newData.parentDocumentId],
+        (oldData: any[]) => oldData?.map(data => (data.id === newData.id ? newData : data))
+      );
     },
   });
 
@@ -199,5 +216,6 @@ export const useDocument = () => {
     handleArchiveDocument,
     handleDeleteDocument,
     handleRestoreDocument,
+    updateDocumentFn,
   };
 };
