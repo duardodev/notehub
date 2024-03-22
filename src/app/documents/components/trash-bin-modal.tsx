@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getArchivedDocuments } from '@/actions/get-documents';
 import { useTrashBox } from '@/store/use-trash-box';
 import { useDocument } from '@/hooks/use-document';
-import { ConfirmationModal } from '@/components/ui/confirmation-modal';
+import { ConfirmationModal } from './confirmation-modal';
 import {
   CommandDialog,
   CommandEmpty,
@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/command';
 import { IconArrowBack, IconFile, IconTrash } from '@tabler/icons-react';
 
-export function TrashBox() {
+export function TrashBinModal() {
   const menuIsOpen = useTrashBox(state => state.menuIsOpen);
   const closeMenu = useTrashBox(state => state.closeMenu);
   const { handleDeleteDocument, handleRestoreDocument, handleRedirect } = useDocument();
@@ -40,17 +40,22 @@ export function TrashBox() {
             <CommandItem
               key={document.id}
               value={`${document.id}-${document.title}`}
-              onSelect={() => handleSelect(document.id)}
+              className="p-0"
             >
-              {document.icon ? (
-                <div className="shrink-0 text-[18px]">{document.icon}</div>
-              ) : (
-                <IconFile className="h-[18px] w-[18px] shrink-0" />
-              )}
+              <div
+                className="w-full py-2 pl-2 flex items-center"
+                onClick={() => handleSelect(document.id)}
+              >
+                {document.icon ? (
+                  <div className="shrink-0 text-[18px]">{document.icon}</div>
+                ) : (
+                  <IconFile className="h-[18px] w-[18px] shrink-0" />
+                )}
 
-              <span className="ml-[6px]">{document.title}</span>
+                <span className="ml-[6px]">{document.title}</span>
+              </div>
 
-              <div className="ml-auto flex items-center gap-[6px]">
+              <div className="ml-auto py-2 pr-2 flex items-center gap-[6px]">
                 <div
                   role="button"
                   onClick={() => handleRestoreDocument(document.id)}
