@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { ClerkLoading, ClerkLoaded, SignedOut, SignInButton, SignedIn } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
+import { LoadingSpinner } from '@/components/loading-spinner';
 import { Illustrations } from './components/illustrations';
-import { IconLoader2 } from '@tabler/icons-react';
 import { LogIn } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export default function Home() {
         </div>
 
         <ClerkLoading>
-          <IconLoader2 className="animate-spin" size={24} />
+          <LoadingSpinner />
         </ClerkLoading>
 
         <ClerkLoaded>

@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 
-import { ClerkLoading, ClerkLoaded } from '@clerk/nextjs';
-import { IconLoader2 } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import { Navigation } from './components/navigation';
 import { TrashBinModal } from './components/trash-bin-modal';
+import { LoadingSpinner } from '@/components/loading-spinner';
+import { ClerkLoading, ClerkLoaded } from '@clerk/nextjs';
 
 export const metadata: Metadata = {
   title: 'Documentos',
@@ -15,7 +15,7 @@ export default function DocumentsLayout({ children }: { children: ReactNode }) {
     <>
       <ClerkLoading>
         <div className="h-screen flex flex-col items-center justify-center">
-          <IconLoader2 className="animate-spin" size={26} />
+          <LoadingSpinner />
         </div>
       </ClerkLoading>
 
