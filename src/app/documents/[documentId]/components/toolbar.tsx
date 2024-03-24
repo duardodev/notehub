@@ -3,9 +3,11 @@
 import { ElementRef, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { IconPicker } from './icon-picker';
+import { CoverImageModal } from './cover-image-modal';
 import { useDocument } from '@/hooks/use-document';
 import { Document } from '@prisma/client';
-import { IconMoodSmile, IconX } from '@tabler/icons-react';
+
+import { IconMoodSmile, IconPhotoPlus, IconX } from '@tabler/icons-react';
 import TextareaAutosize from 'react-textarea-autosize';
 
 interface ToolbarProps {
@@ -57,7 +59,7 @@ export function Toolbar({ initialData }: ToolbarProps) {
 
   return (
     <div className="pl-[58px] group relative">
-      {!!initialData?.icon ? (
+      {!!initialData?.icon && (
         <div className="group/icon py-6 flex items-center gap-2">
           <IconPicker onChange={handleIconSelect}>
             <p className="text-6xl hover:opacity-75 transition">{initialData?.icon}</p>
@@ -72,16 +74,27 @@ export function Toolbar({ initialData }: ToolbarProps) {
             <IconX size={16} />
           </Button>
         </div>
-      ) : (
-        <div className="py-4 opacity-0 group-hover:opacity-100 transition">
+      )}
+
+      <div className="py-4 opacity-0 group-hover:opacity-100 flex items-center gap-2 transition">
+        {!initialData?.icon && (
           <IconPicker asChild onChange={handleIconSelect}>
             <Button size="sm" variant="outline" className="text-muted-foreground text-sx">
               <IconMoodSmile className="h-4 w-4 mr-2" />
               Adicionar ícone
             </Button>
           </IconPicker>
-        </div>
-      )}
+        )}
+
+        {!initialData?.coverImage && (
+          <CoverImageModal initialData={initialData}>
+            <Button size="sm" variant="outline" className="text-muted-foreground text-sx">
+              <IconPhotoPlus className="h-4 w-4 mr-2" />
+              Adicionar capa
+            </Button>
+          </CoverImageModal>
+        )}
+      </div>
 
       {isEditing ? (
         <TextareaAutosize

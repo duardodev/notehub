@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { Navigation } from './components/navigation';
 import { TrashBinModal } from './components/trash-bin-modal';
 import { LoadingSpinner } from '@/components/loading-spinner';
+import { EdgeStoreProvider } from '@/lib/edgestore';
 import { ClerkLoading, ClerkLoaded } from '@clerk/nextjs';
 
 export const metadata: Metadata = {
@@ -25,7 +26,7 @@ export default function DocumentsLayout({ children }: { children: ReactNode }) {
 
           <main className="w-screen h-full flex-1 overflow-y-auto absolute md:static">
             <TrashBinModal />
-            {children}
+            <EdgeStoreProvider>{children}</EdgeStoreProvider>
           </main>
         </div>
       </ClerkLoaded>
