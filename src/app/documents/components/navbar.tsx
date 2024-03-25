@@ -23,23 +23,22 @@ export function Navbar({ isCollapsed, handleResetWidth }: NavbarProps) {
 
   if (isLoading) {
     return (
-      <nav className="w-full p-4 flex items-center gap-x-3">
+      <nav className="bg-background w-full p-4 flex items-center gap-x-3">
         <Skeleton className="h-4 w-24" />
       </nav>
     );
   }
 
   return (
-    <nav className="w-full p-4 flex items-center gap-x-3">
+    <nav className="bg-background h-16 w-full px-4 flex items-center justify-between gap-x-3">
       {isCollapsed && (
         <Button onClick={handleResetWidth} variant={'ghost'} size={'icon'} className="h-8 w-8">
           <IconLayoutSidebarLeftExpand size={20} />
         </Button>
       )}
 
-      <h1 className="text-sm truncate font-medium">{document?.title}</h1>
-
-      <div className="ml-auto">
+      <div className="w-full flex items-center justify-between">
+        <h1 className="text-sm truncate font-medium">{document?.title}</h1>
         <ThemeToggle />
       </div>
     </nav>
