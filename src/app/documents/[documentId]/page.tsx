@@ -5,6 +5,7 @@ import { getDocumentById } from '@/actions/get-documents';
 import { Banner } from './components/banner';
 import { Cover } from './components/cover';
 import { Toolbar } from './components/toolbar';
+import { cn } from '@/lib/utils';
 
 interface DocumentPageProps {
   params: {
@@ -21,9 +22,11 @@ export default function DocumentPage({ params }: DocumentPageProps) {
   return (
     <div className="pb-40">
       {document?.isArchived && <Banner documentId={document.id} />}
-      <Cover url={document?.coverImage} />
+      <Cover initialData={document} />
 
-      <div className="mt-28 mx-auto md:max-w-3xl lg:max-w-4xl">
+      <div
+        className={cn('mt-24 mx-auto md:max-w-3xl lg:max-w-4xl', document?.coverImage && 'mt-16')}
+      >
         <Toolbar initialData={document} />
       </div>
     </div>

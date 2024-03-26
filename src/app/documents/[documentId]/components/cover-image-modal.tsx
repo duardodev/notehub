@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
+import { SingleImageDropzone } from './single-image-dropzone';
 import { Document } from '@prisma/client';
 import { useEdgeStore } from '@/lib/edgestore';
 import { useDocument } from '@/hooks/use-document';
-import { SingleImageDropzone } from './single-image-dropzone';
 
 interface CoverImageModalProps {
   initialData?: Document | null;
@@ -30,13 +30,22 @@ export function CoverImageModal({ initialData, children }: CoverImageModalProps)
       setIsSubmitting(true);
       setFile(file);
 
-      const response = await edgestore.publicFiles.upload({
-        file,
-      });
+      let response;
 
-      await updateDocumentFn({
+      if (initialData?.coverImage) {
+        response = await edgestore.publicFiles.upload({
+          file,
+          options: { replaceTargetUrl: initialData.coverImage },
+        });
+      } else {
+        response = await edgestore.publicFiles.upload({
+          file,
+        });
+      }
+
+      updateDocumentFn({
         ...initialData,
-        coverImage: response.url,
+        coverImage: response?.url,
       });
 
       handleClose();

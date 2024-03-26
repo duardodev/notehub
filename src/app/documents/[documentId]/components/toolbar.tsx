@@ -60,7 +60,7 @@ export function Toolbar({ initialData }: ToolbarProps) {
   return (
     <div className="pl-[58px] group relative">
       {!!initialData?.icon && (
-        <div className="group/icon py-6 flex items-center gap-2">
+        <div className="group/icon py-4 flex items-center gap-2">
           <IconPicker onChange={handleIconSelect}>
             <p className="text-6xl hover:opacity-75 transition">{initialData?.icon}</p>
           </IconPicker>
