@@ -38,7 +38,11 @@ export function Navbar({ isCollapsed, handleResetWidth }: NavbarProps) {
       )}
 
       <div className="w-full flex items-center justify-between">
-        <h1 className="text-sm truncate font-medium">{document?.title}</h1>
+        <div className="flex items-center gap-[6px]">
+          {document?.icon && <p>{document.icon}</p>}
+          <h1 className="text-sm truncate font-medium">{document?.title}</h1>
+        </div>
+
         <ThemeToggle />
       </div>
     </nav>
