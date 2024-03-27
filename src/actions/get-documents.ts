@@ -68,17 +68,21 @@ export async function getArchivedDocuments() {
     throw new Error('Not authenticated');
   }
 
-  const documents = prisma.document.findMany({
-    where: {
-      userId,
-      isArchived: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+  try {
+    const documents = prisma.document.findMany({
+      where: {
+        userId,
+        isArchived: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
 
-  return documents;
+    return documents;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function getDocumentById({ id }: getDocumentsType) {
@@ -88,12 +92,16 @@ export async function getDocumentById({ id }: getDocumentsType) {
     throw new Error('Not authenticated');
   }
 
-  const document = prisma.document.findUnique({
-    where: {
-      id,
-      userId,
-    },
-  });
+  try {
+    const document = prisma.document.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
 
-  return document;
+    return document;
+  } catch (error) {
+    console.log(error);
+  }
 }
