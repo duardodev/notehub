@@ -9,7 +9,7 @@ import { Setting } from './setting';
 import { Item } from './item';
 
 import { useDocument } from '@/hooks/use-document';
-import { useTrashBox } from '@/store/use-trash-box';
+import { useTrashBin } from '@/store/use-trash-bin';
 import { SignOutButton, useUser } from '@clerk/nextjs';
 
 import {
@@ -38,7 +38,7 @@ export function Sidebar({
   handleMouseDown,
   handleResetWidth,
 }: SidebarProps) {
-  const openMenu = useTrashBox(state => state.openMenu);
+  const openMenu = useTrashBin(state => state.openMenu);
   const { handleCreateDocument } = useDocument();
   const { user } = useUser();
 

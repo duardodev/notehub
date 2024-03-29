@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { getArchivedDocuments } from '@/actions/get-documents';
-import { useTrashBox } from '@/store/use-trash-box';
+import { useTrashBin } from '@/store/use-trash-bin';
 import { useDocument } from '@/hooks/use-document';
 import { ConfirmationModal } from './confirmation-modal';
 import {
@@ -16,8 +16,8 @@ import {
 import { IconArrowBack, IconFile, IconTrash } from '@tabler/icons-react';
 
 export function TrashBinModal() {
-  const menuIsOpen = useTrashBox(state => state.menuIsOpen);
-  const closeMenu = useTrashBox(state => state.closeMenu);
+  const menuIsOpen = useTrashBin(state => state.menuIsOpen);
+  const closeMenu = useTrashBin(state => state.closeMenu);
   const { handleDeleteDocument, handleRestoreDocument, handleRedirect } = useDocument();
 
   const { data: documents } = useQuery({
