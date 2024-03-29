@@ -10,6 +10,7 @@ const updateDocumentSchema = z.object({
   title: z.string().optional(),
   icon: z.string().optional().nullable(),
   coverImage: z.string().optional().nullable(),
+  content: z.string().optional().nullable(),
 });
 
 type updateDocumentType = z.infer<typeof updateDocumentSchema>;

@@ -57,3 +57,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.bn-container[data-theming-css-variables-demo][data-color-scheme='dark'] {
+  --bn-colors-editor-background: 20 14.3% 4.1%;
+}
