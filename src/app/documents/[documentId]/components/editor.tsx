@@ -29,7 +29,7 @@ export default function Editor({ initialContent, onContentChange }: EditorProps)
   });
 
   return (
-    <div>
+    <div className="pl-1">
       <BlockNoteView
         editor={editor}
         theme={resolvedTheme === 'dark' ? 'dark' : 'light'}
