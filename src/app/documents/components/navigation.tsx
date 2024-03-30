@@ -93,6 +93,7 @@ export function Navigation() {
   return (
     <>
       <div
+        onClick={handleCollapse}
         className={cn(
           'bg-gray-500 w-screen h-screen opacity-0 visible md:hidden fixed left-0 right-0 top-0 z-20 transition-opacity ease-in-out duration-300',
           !isCollapsed && 'opacity-40',
