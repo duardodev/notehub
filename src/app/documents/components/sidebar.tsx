@@ -10,6 +10,7 @@ import { Item } from './item';
 
 import { useDocument } from '@/hooks/use-document';
 import { useTrashBin } from '@/store/use-trash-bin';
+import { useSearch } from '@/store/use-search';
 import { SignOutButton, useUser } from '@clerk/nextjs';
 
 import {
@@ -39,6 +40,7 @@ export function Sidebar({
   handleResetWidth,
 }: SidebarProps) {
   const openMenu = useTrashBin(state => state.openMenu);
+  const openModal = useSearch(state => state.openModal);
   const { handleCreateDocument } = useDocument();
   const { user } = useUser();
 
@@ -66,6 +68,7 @@ export function Sidebar({
               variant={'outline'}
               size={'sm'}
               className="min-w-full relative text-muted-foreground rounded-lg justify-start gap-2"
+              onClick={openModal}
             >
               <IconSearch size={18} />
               <span>Procurar...</span>

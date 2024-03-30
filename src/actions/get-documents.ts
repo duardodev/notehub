@@ -6,12 +6,12 @@ import { z } from 'zod';
 
 const getDocumentsSchema = z.object({
   id: z.string().optional(),
-  parentDocumentId: z.string().optional(),
+  parentDocumentId: z.string().optional().nullable(),
 });
 
 type getDocumentsType = z.infer<typeof getDocumentsSchema>;
 
-export async function getDocuments() {
+export async function getDocuments(data?: getDocumentsType) {
   const { userId } = auth();
 
   if (!userId) {
@@ -22,7 +22,7 @@ export async function getDocuments() {
     const documents = await prisma.document.findMany({
       where: {
         userId,
-        parentDocumentId: null,
+        parentDocumentId: data?.parentDocumentId,
         isArchived: false,
       },
       orderBy: {

@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { LoadingSpinner } from '@/components/loading-spinner';
 import { Navigation } from './components/navigation';
 import { TrashBinModal } from './components/trash-bin-modal';
+import { SearchModal } from './components/search-modal';
 import { ClerkLoading, ClerkLoaded } from '@clerk/nextjs';
 import { EdgeStoreProvider } from '@/lib/edgestore';
 
@@ -24,7 +25,7 @@ export default async function DocumentsLayout({ children }: { children: ReactNod
 
   await queryClient.prefetchQuery({
     queryKey: ['get-documents'],
-    queryFn: getDocuments,
+    queryFn: () => getDocuments({ parentDocumentId: null }),
   });
 
   await queryClient.prefetchQuery({
@@ -56,6 +57,7 @@ export default async function DocumentsLayout({ children }: { children: ReactNod
             <Navigation />
 
             <main className="w-screen h-full flex-1 overflow-y-auto absolute md:static">
+              <SearchModal />
               <TrashBinModal />
               <EdgeStoreProvider>{children}</EdgeStoreProvider>
             </main>

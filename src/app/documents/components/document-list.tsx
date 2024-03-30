@@ -16,7 +16,7 @@ export function DocumentList() {
 
   const { data: documents, isLoading } = useQuery({
     queryKey: ['get-documents'],
-    queryFn: () => getDocuments(),
+    queryFn: () => getDocuments({ parentDocumentId: null }),
   });
 
   if (isLoading) {
