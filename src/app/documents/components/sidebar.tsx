@@ -48,7 +48,7 @@ export function Sidebar({
     <aside
       ref={sidebarRef}
       className={cn(
-        'group w-64 overflow-hidden border-r border-border relative top-0 left-0 z-20',
+        'group w-64 overflow-hidden border-r border-border relative top-0 left-0 z-[99999] lg:z-20',
         isResetting && 'transition-all ease-in-out duration-300',
         isMobile && 'w-0'
       )}
