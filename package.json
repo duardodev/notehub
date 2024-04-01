@@ -31,6 +31,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
     "emoji-mart": "^5.5.2",
+    "framer-motion": "^11.0.24",
     "lucide-react": "^0.309.0",
     "next": "14.0.4",
     "next-themes": "^0.2.1",
@@ -41,6 +42,7 @@
     "sonner": "^1.4.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
+    "typeit-react": "^2.7.1",
     "usehooks-ts": "^2.10.0",
     "zod": "^3.22.4",
     "zustand": "^4.5.2"
