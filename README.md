@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![Preview do projeto](https://i.imgur.com/NheMue0.png)
 
-## Getting Started
+# Sobre
 
-First, run the development server:
+NoteHub é uma aplicação web inspirada na ferramenta Notion, desenvolvida para simplificar a criação e edição de documentos. Suas principais funcionalidades incluem:
+
+- Criação de Documentos: Crie documentos facilmente, organizando suas ideias e informações de maneira intuitiva.
+
+- Gerenciamento Avançado: Deletar temporariamente ou permanentemente documentos, além da capacidade de restaurá-los quando necessário.
+
+- Edição Flexível: Edite o conteúdo de seus documentos de forma rápida e eficiente, mantendo-os sempre atualizados.
+
+- Personalização de Documentos: Adicione um ícone e uma capa personalizada para dar um toque especial aos seus documentos.
+
+Ao construir este "clone" do Notion, explorei novas ferramentas e conceitos, incluindo:
+
+- Clerk: Implementação de autenticação fácil e segura para os usuários.
+
+- Zustand: Utilização de um estado global simples e eficiente para gerenciamento de dados na aplicação.
+
+- Supabase: Integração de um banco de dados PostgreSQL escalável para armazenamento de informações.
+
+Além disso, a jornada de desenvolvimento do NoteHub também abrangeu aprendizados em:
+
+- Upload de Imagens com Edge Store: Implementação de funcionalidade para o envio e gerenciamento de imagens na aplicação.
+
+- Data Fetching com React Query: Utilização de React Query para otimizar e simplificar as requisições de dados entre o frontend e o backend.
+
+- Server Actions: Exploração de práticas eficientes para manipulação de dados no lado do servidor, garantindo uma experiência fluida para os usuários.
+
+## 📦 Tecnologias usadas:
+
+- [React.js](https://react.dev/)
+- [Next.js](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Clerk](https://clerk.com/)
+- [Prisma ORM](https://www.prisma.io/)
+- [Supabase](https://supabase.com/)
+- [React Query](https://tanstack.com/query/latest)
+- [Edge Store](https://edgestore.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Shadcn/ui](https://ui.shadcn.com/)
+- [Zod](https://zod.dev/)
+
+## 🔨 Guia de instalação
+
+**Clone o projeto**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/sampaiocode/notehub.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Siga os passos abaixo**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Acesse a pasta
+$ cd notehub
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# Instale as dependências
+$ npm install
 
-## Learn More
+# Crie um arquivo .env.local'
+# Faça uma cópia de '.env.local.example' para '.env.local'
+# Preencha as variáveis ambiente em seguida
+$ cp .env.local.example .env.local
 
-To learn more about Next.js, take a look at the following resources:
+# Inicie a aplicação
+$ npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📄 Licença
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Esse projeto está sob licença. Veja o arquivo [LICENÇA](LICENSE) para mais detalhes.
