@@ -17,7 +17,7 @@ export function Heading() {
       </motion.h1>
 
       <TypeIt
-        options={{ speed: 60, loop: true }}
+        options={{ speed: 60 }}
         as="h2"
         className="max-w-[520px] mx-auto text-lg sm:text-xl font-medium text-center"
       >
