@@ -43,32 +43,6 @@ Além disso, a jornada de desenvolvimento do NoteHub também abrangeu aprendizad
 - [Shadcn/ui](https://ui.shadcn.com/)
 - [Zod](https://zod.dev/)
 
-## 🔨 Guia de instalação
-
-**Clone o projeto**
-
-```bash
-git clone https://github.com/sampaiocode/notehub.git
-```
-
-**Siga os passos abaixo**
-
-```bash
-# Acesse a pasta
-$ cd notehub
-
-# Instale as dependências
-$ npm install
-
-# Crie um arquivo .env.local'
-# Faça uma cópia de '.env.local.example' para '.env.local'
-# Preencha as variáveis ambiente em seguida
-$ cp .env.local.example .env.local
-
-# Inicie a aplicação
-$ npm run dev
-```
-
 ## 📄 Licença
 
 Esse projeto está sob licença. Veja o arquivo [LICENÇA](LICENSE) para mais detalhes.
