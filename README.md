@@ -43,6 +43,4 @@ Além disso, a jornada de desenvolvimento do NoteHub também abrangeu aprendizad
 - [Shadcn/ui](https://ui.shadcn.com/)
 - [Zod](https://zod.dev/)
 
-## 📄 Licença
-
-Esse projeto está sob licença. Veja o arquivo [LICENÇA](LICENSE) para mais detalhes.
+<p align="center">Desenvolvido com 💙 por Deivit Eduardo</p>
