@@ -133,7 +133,7 @@ export const useDocument = () => {
       toast.loading('Criando um novo documento...');
 
       const document = await createChildDocumentFn({
-        title: 'Sem título filho',
+        title: 'Sem título',
         parentDocumentId: id,
       });
 
