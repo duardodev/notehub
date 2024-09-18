@@ -25,7 +25,7 @@ export default function Home() {
           <SignedOut>
             <SignInButton redirectUrl="/documents" mode="modal">
               <Button className="gap-2 px-4 sm:text-base">
-                Entrar
+                Começar
                 <LogIn size={20} />
               </Button>
             </SignInButton>
@@ -34,7 +34,7 @@ export default function Home() {
           <SignedIn>
             <Button className="gap-3 px-4 sm:text-base" asChild>
               <Link href="/documents">
-                Entrar
+                Começar
                 <LogIn size={20} />
               </Link>
             </Button>

@@ -12,16 +12,17 @@ export function Heading() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        Suas Ideias, Documentos, & <br /> Planos. Unificados. <br /> Bem-vindo ao{' '}
-        <span className="text-primary underline underline-offset-8">NoteHub.</span>
+        Ideias, Documentos & Planos. <br className="hidden sm:block" /> Todos em um só lugar. <br />{' '}
+        Bem-vindo ao <span className="text-primary underline underline-offset-4">NoteHub!</span>
       </motion.h1>
 
       <TypeIt
-        options={{ speed: 60 }}
+        options={{ speed: 35 }}
         as="h2"
-        className="max-w-[520px] mx-auto text-lg sm:text-xl font-medium text-center"
+        className="mx-auto text-lg sm:text-xl font-medium text-center"
       >
-        O NoteHub é o lugar onde tudo acontece de maneira mais organizada, rápida e eficiente!
+        O espaço ideal para organizar e otimizar sua produtividade. Com o NoteHub, você pode
+        gerenciar tudo de forma eficiente, em um só lugar!
       </TypeIt>
     </div>
   );
