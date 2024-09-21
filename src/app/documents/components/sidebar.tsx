@@ -1,24 +1,23 @@
 'use client';
 
 import { RefObject } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { signOut, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Logo } from '@/components/logo';
 import { DocumentList } from './document-list';
-import { Setting } from './setting';
 import { Item } from './item';
 
 import { useDocument } from '@/hooks/use-document';
 import { useTrashBin } from '@/store/use-trash-bin';
 import { useSearch } from '@/store/use-search';
-import { SignOutButton, useUser } from '@clerk/nextjs';
 
 import {
   IconSquareRoundedPlus,
   IconTrash,
   IconSearch,
-  IconLogout,
   IconLayoutSidebarLeftCollapse,
+  IconLogout,
 } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
 
@@ -42,7 +41,7 @@ export function Sidebar({
   const openMenu = useTrashBin(state => state.openMenu);
   const openModal = useSearch(state => state.openModal);
   const { handleCreateDocument } = useDocument();
-  const { user } = useUser();
+  const { data } = useSession();
 
   return (
     <aside
@@ -79,7 +78,6 @@ export function Sidebar({
           </div>
 
           <div>
-            <Setting />
             <Item
               onClick={handleCreateDocument}
               icon={IconSquareRoundedPlus}
@@ -98,28 +96,29 @@ export function Sidebar({
           <div className="h-[2px] bg-border mx-3" />
 
           <div className="px-3 pb-4 w-full flex items-center gap-1">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={user?.imageUrl} />
+            <Avatar className="h-10 w-10 rounded-full">
+              <AvatarImage src={data?.user.image!} className="rounded-full" />
               <AvatarFallback>NH</AvatarFallback>
             </Avatar>
 
             <div className="ml-1 space-y-1 truncate whitespace-nowrap">
               <p className="text-sm leading-none font-medium">
-                {user ? user.firstName + (user.lastName ? ` ${user.lastName}` : '') : 'Nome'}
+                {data?.user ? data.user.name : 'Nome'}
               </p>
-              <p
-                title={user?.emailAddresses[0].emailAddress}
-                className="text-xs truncate text-muted-foreground"
-              >
-                {user ? user.emailAddresses[0].emailAddress : 'e-mail'}
+              <p title={data?.user.email!} className="text-xs truncate text-muted-foreground">
+                {data?.user ? data.user.email : 'e-mail'}
               </p>
             </div>
 
-            <SignOutButton>
-              <Button variant={'ghost'} size={'icon'} className="ml-auto h-7 w-7">
-                <IconLogout size={20} />
-              </Button>
-            </SignOutButton>
+            <Button
+              onClick={() => signOut()}
+              type="submit"
+              variant={'ghost'}
+              size={'icon'}
+              className="ml-auto h-7 w-7"
+            >
+              <IconLogout size={20} />
+            </Button>
           </div>
         </div>
 
