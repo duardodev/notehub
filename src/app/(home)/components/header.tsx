@@ -1,13 +1,13 @@
 'use client';
 
-import { useUser, SignedIn, UserButton } from '@clerk/nextjs';
 import { Logo } from '@/components/logo';
-import { LoadingSpinner } from '@/components/loading-spinner';
 import { ThemeToggle } from '@/components/theme-toogle';
 import { motion } from 'framer-motion';
+import { useSession } from 'next-auth/react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export function Header() {
-  const { isLoaded } = useUser();
+  const { data } = useSession();
 
   return (
     <motion.header
@@ -19,12 +19,11 @@ export function Header() {
       <Logo />
 
       <div className="flex items-center gap-3">
-        {isLoaded ? (
-          <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
-        ) : (
-          <LoadingSpinner />
+        {data?.user && (
+          <Avatar className="h-8 w-8">
+            <AvatarImage src={data?.user.image!} />
+            <AvatarFallback>NH</AvatarFallback>
+          </Avatar>
         )}
 
         <ThemeToggle />
