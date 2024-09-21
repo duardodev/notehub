@@ -1,11 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Lato } from 'next/font/google';
-import { ThemeProvider } from '@/components/theme-provider';
-
-import { ReactQueryClientProvider } from '@/lib/query-client';
-import { ClerkProvider } from '@clerk/nextjs';
-import { ptBR } from '@clerk/localizations';
 import { Toaster } from 'sonner';
+import { Providers } from './providers';
 
 import './globals.css';
 
@@ -21,25 +17,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider localization={ptBR}>
-      <html
-        lang="pt-BR"
-        suppressHydrationWarning
-        className={`${inter.className} ${lato.variable} antialiased`}
-      >
-        <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-            storageKey="notehub-theme"
-          >
-            <ReactQueryClientProvider>{children}</ReactQueryClientProvider>
-            <Toaster position="top-center" />
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html
+      lang="pt-BR"
+      suppressHydrationWarning
+      className={`${inter.className} ${lato.variable} antialiased`}
+    >
+      <body>
+        <Providers>
+          {children}
+          <Toaster position="top-center" />
+        </Providers>
+      </body>
+    </html>
   );
 }
