@@ -1,7 +1,8 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { auth } from '@clerk/nextjs';
+import { authOptions } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 
 const updateDocumentSchema = z.object({
@@ -16,9 +17,9 @@ const updateDocumentSchema = z.object({
 type updateDocumentType = z.infer<typeof updateDocumentSchema>;
 
 export async function updateDocument({ id, parentDocumentId, ...values }: updateDocumentType) {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
+  if (!session?.user) {
     throw new Error('Not authenticated');
   }
 
@@ -26,7 +27,7 @@ export async function updateDocument({ id, parentDocumentId, ...values }: update
     const existingDocument = await prisma.document.findUnique({
       where: {
         id,
-        userId,
+        userId: session.user.id,
       },
     });
 
@@ -34,7 +35,7 @@ export async function updateDocument({ id, parentDocumentId, ...values }: update
       throw new Error('Not found');
     }
 
-    if (existingDocument.userId !== userId) {
+    if (existingDocument.userId !== session.user.id) {
       throw new Error('Unauthorized');
     }
 
@@ -42,7 +43,7 @@ export async function updateDocument({ id, parentDocumentId, ...values }: update
       where: {
         id,
         parentDocumentId,
-        userId,
+        userId: session.user.id,
       },
       data: {
         ...values,

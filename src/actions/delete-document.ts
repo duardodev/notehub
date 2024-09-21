@@ -1,7 +1,8 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { auth } from '@clerk/nextjs';
+import { authOptions } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 
 const deleteDocumentSchema = z.object({
@@ -11,9 +12,9 @@ const deleteDocumentSchema = z.object({
 type deleteDocumentType = z.infer<typeof deleteDocumentSchema>;
 
 export async function deleteDocument({ id }: deleteDocumentType) {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
+  if (!session?.user) {
     throw new Error('Not authenticated');
   }
 
@@ -21,7 +22,7 @@ export async function deleteDocument({ id }: deleteDocumentType) {
     const document = await prisma.document.delete({
       where: {
         id,
-        userId,
+        userId: session.user.id,
       },
     });
 

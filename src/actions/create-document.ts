@@ -1,7 +1,8 @@
 'use server';
 
+import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
-import { auth } from '@clerk/nextjs';
+import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 
 const createDocumetSchema = z.object({
@@ -12,16 +13,16 @@ const createDocumetSchema = z.object({
 type createDocumentType = z.infer<typeof createDocumetSchema>;
 
 export async function createDocument({ title, parentDocumentId }: createDocumentType) {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
+  if (!session?.user) {
     throw new Error('Not authenticated');
   }
 
   try {
     const document = await prisma.document.create({
       data: {
-        userId,
+        userId: session.user.id as string,
         title,
         parentDocumentId,
         isArchived: false,

@@ -1,7 +1,8 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { auth } from '@clerk/nextjs';
+import { authOptions } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 
 const getDocumentsSchema = z.object({
@@ -12,16 +13,16 @@ const getDocumentsSchema = z.object({
 type getDocumentsType = z.infer<typeof getDocumentsSchema>;
 
 export async function getDocuments(data?: getDocumentsType) {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
+  if (!session?.user) {
     throw new Error('Not authenticated');
   }
 
   try {
     const documents = await prisma.document.findMany({
       where: {
-        userId,
+        userId: session.user.id,
         parentDocumentId: data?.parentDocumentId,
         isArchived: false,
       },
@@ -37,16 +38,16 @@ export async function getDocuments(data?: getDocumentsType) {
 }
 
 export async function getChildDocuments({ parentDocumentId }: getDocumentsType) {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
+  if (!session?.user) {
     throw new Error('Not authenticated');
   }
 
   try {
     const documents = await prisma.document.findMany({
       where: {
-        userId,
+        userId: session.user.id,
         parentDocumentId,
         isArchived: false,
       },
@@ -62,16 +63,16 @@ export async function getChildDocuments({ parentDocumentId }: getDocumentsType) 
 }
 
 export async function getArchivedDocuments() {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
+  if (!session?.user) {
     throw new Error('Not authenticated');
   }
 
   try {
     const documents = prisma.document.findMany({
       where: {
-        userId,
+        userId: session.user.id,
         isArchived: true,
       },
       orderBy: {
@@ -86,9 +87,9 @@ export async function getArchivedDocuments() {
 }
 
 export async function getDocumentById({ id }: getDocumentsType) {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
+  if (!session?.user) {
     throw new Error('Not authenticated');
   }
 
@@ -96,7 +97,7 @@ export async function getDocumentById({ id }: getDocumentsType) {
     const document = prisma.document.findUnique({
       where: {
         id,
-        userId,
+        userId: session.user.id,
       },
     });
 

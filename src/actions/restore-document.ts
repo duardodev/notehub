@@ -1,8 +1,8 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { auth } from '@clerk/nextjs';
-import { log } from 'console';
+import { authOptions } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 
 const restoreDocumentSchema = z.object({
@@ -12,24 +12,24 @@ const restoreDocumentSchema = z.object({
 type restoreDocumentType = z.infer<typeof restoreDocumentSchema>;
 
 export async function restoreDocument({ id }: restoreDocumentType) {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
+  if (!session?.user) {
     throw new Error('Not authenticated');
   }
 
   try {
     const existingDocument = await prisma.document.findUnique({
       where: {
-        userId,
+        userId: session.user.id,
         id,
       },
     });
 
-    const parentDocumentIsArchived = await prisma.document.findUnique({
+    await prisma.document.findUnique({
       where: {
         id,
-        userId,
+        userId: session.user.id,
         parentDocumentId: existingDocument?.parentDocumentId,
         isArchived: true,
       },
@@ -39,7 +39,7 @@ export async function restoreDocument({ id }: restoreDocumentType) {
       throw new Error('Not found');
     }
 
-    if (existingDocument.userId !== userId) {
+    if (existingDocument.userId !== session.user.id) {
       throw new Error('Unauthorized');
     }
 
@@ -50,7 +50,7 @@ export async function restoreDocument({ id }: restoreDocumentType) {
     if (existingDocument.parentDocumentId) {
       const parentDocument = await prisma.document.findUnique({
         where: {
-          userId,
+          userId: session.user.id,
           id: existingDocument.parentDocumentId,
         },
       });
@@ -62,7 +62,7 @@ export async function restoreDocument({ id }: restoreDocumentType) {
 
     const document = await prisma.document.update({
       where: {
-        userId,
+        userId: session.user.id,
         id,
       },
       data: documentUpdated,
@@ -77,16 +77,16 @@ export async function restoreDocument({ id }: restoreDocumentType) {
 }
 
 async function restoreChildDocuments(id?: string) {
-  const { userId } = auth();
+  const session = await getServerSession(authOptions);
 
-  if (!userId) {
+  if (!session?.user) {
     throw new Error('Not authenticated');
   }
 
   try {
     const children = await prisma.document.findMany({
       where: {
-        userId,
+        userId: session.user.id,
         parentDocumentId: id,
       },
     });
