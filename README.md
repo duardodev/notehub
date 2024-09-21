@@ -1,4 +1,4 @@
-![Preview do projeto](https://i.imgur.com/Wsz1c75.png)
+![Preview do projeto](https://i.imgur.com/FSXD2yI.png)
 
 # Sobre
 
@@ -14,7 +14,7 @@ NoteHub é uma aplicação web inspirada na ferramenta Notion, desenvolvida para
 
 Ao construir este "clone" do Notion, explorei novas ferramentas e conceitos, incluindo:
 
-- **Clerk:** Implementação de autenticação fácil e segura para os usuários.
+- **Next Auth:** Implementação de autenticação para os usuários.
 
 - **Zustand:** Utilização de um estado global simples e eficiente para gerenciamento de dados na aplicação.
 
@@ -33,7 +33,7 @@ Além disso, a jornada de desenvolvimento do NoteHub também abrangeu aprendizad
 - [React.js](https://react.dev/)
 - [Next.js](https://nextjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
-- [Clerk](https://clerk.com/)
+- [NextAuth](https://next-auth.js.org/)
 - [Prisma ORM](https://www.prisma.io/)
 - [Supabase](https://supabase.com/)
 - [React Query](https://tanstack.com/query/latest)
