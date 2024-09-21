@@ -1,11 +1,9 @@
 import { Metadata } from 'next';
 
 import { ReactNode } from 'react';
-import { LoadingSpinner } from '@/components/loading-spinner';
 import { Navigation } from './components/navigation';
 import { TrashBinModal } from './components/trash-bin-modal';
 import { SearchModal } from './components/search-modal';
-import { ClerkLoading, ClerkLoaded } from '@clerk/nextjs';
 import { EdgeStoreProvider } from '@/lib/edgestore';
 
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
@@ -44,26 +42,16 @@ export default async function DocumentsLayout({ children }: { children: ReactNod
   });
 
   return (
-    <>
-      <ClerkLoading>
-        <div className="h-screen flex flex-col items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      </ClerkLoading>
+    <div className="h-screen flex">
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Navigation />
 
-      <ClerkLoaded>
-        <div className="h-screen flex">
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            <Navigation />
-
-            <main className="w-screen h-full flex-1 overflow-y-auto absolute md:static">
-              <SearchModal />
-              <TrashBinModal />
-              <EdgeStoreProvider>{children}</EdgeStoreProvider>
-            </main>
-          </HydrationBoundary>
-        </div>
-      </ClerkLoaded>
-    </>
+        <main className="w-screen h-full flex-1 overflow-y-auto absolute md:static">
+          <SearchModal />
+          <TrashBinModal />
+          <EdgeStoreProvider>{children}</EdgeStoreProvider>
+        </main>
+      </HydrationBoundary>
+    </div>
   );
 }
