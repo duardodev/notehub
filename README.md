@@ -2,9 +2,9 @@
 
 # Sobre
 
-NoteHub é uma aplicação web inspirada na ferramenta Notion, desenvolvida para simplificar a criação e edição de documentos. Suas principais funcionalidades incluem:
+NoteHub é uma aplicação web inspirada na ferramenta Notion, desenvolvida para simplificar a criação e o gerenciamento de anotações.
 
-- **Criação de Documentos:** Crie documentos facilmente, organizando suas ideias e informações de maneira intuitiva.
+## Features
 
 - **Gerenciamento Avançado:** Deletar temporariamente ou permanentemente documentos, além da capacidade de restaurá-los quando necessário.
 
@@ -12,15 +12,11 @@ NoteHub é uma aplicação web inspirada na ferramenta Notion, desenvolvida para
 
 - **Personalização de Documentos:** Adicione um ícone e uma capa personalizada para dar um toque especial aos seus documentos.
 
-Ao construir este "clone" do Notion, explorei novas ferramentas e conceitos, incluindo:
-
 - **Next Auth:** Implementação de autenticação para os usuários.
 
 - **Zustand:** Utilização de um estado global simples e eficiente para gerenciamento de dados na aplicação.
 
 - **Supabase:** Integração de um banco de dados PostgreSQL escalável para armazenamento de informações.
-
-Além disso, a jornada de desenvolvimento do NoteHub também abrangeu aprendizados em:
 
 - **Upload de Imagens com Edge Store:** Implementação de funcionalidade para o envio e gerenciamento de imagens na aplicação.
 
