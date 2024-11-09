@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import TypeIt from 'typeit-react';
 
 export function Heading() {
   return (
@@ -16,14 +15,15 @@ export function Heading() {
         Bem-vindo ao <span className="text-primary underline underline-offset-4">NoteHub!</span>
       </motion.h1>
 
-      <TypeIt
-        options={{ speed: 35 }}
-        as="h2"
+      <motion.h2
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
         className="mx-auto text-lg sm:text-xl font-medium text-center"
       >
         O espaço ideal para organizar e otimizar sua produtividade. Com o NoteHub, você pode
         gerenciar tudo de forma eficiente, em um só lugar!
-      </TypeIt>
+      </motion.h2>
     </div>
   );
 }
