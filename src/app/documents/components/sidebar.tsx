@@ -5,20 +5,14 @@ import { signOut, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Logo } from '@/components/logo';
-import { DocumentList } from './document-list';
-import { Item } from './item';
+import { DocumentList } from './documents-list';
+import { Item } from './Item';
 
 import { useDocument } from '@/hooks/use-document';
 import { useTrashBin } from '@/store/use-trash-bin';
 import { useSearch } from '@/store/use-search';
 
-import {
-  IconSquareRoundedPlus,
-  IconTrash,
-  IconSearch,
-  IconLayoutSidebarLeftCollapse,
-  IconLogout,
-} from '@tabler/icons-react';
+import { IconSquareRoundedPlus, IconTrash, IconSearch, IconLayoutSidebarLeftCollapse, IconLogout } from '@tabler/icons-react';
 import { cn } from '@/lib/utils';
 
 interface SidebarProps {
@@ -30,14 +24,7 @@ interface SidebarProps {
   handleMouseDown: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export function Sidebar({
-  sidebarRef,
-  isMobile,
-  isResetting,
-  handleCollapse,
-  handleMouseDown,
-  handleResetWidth,
-}: SidebarProps) {
+export function Sidebar({ sidebarRef, isMobile, isResetting, handleCollapse, handleMouseDown, handleResetWidth }: SidebarProps) {
   const openMenu = useTrashBin(state => state.openMenu);
   const openModal = useSearch(state => state.openModal);
   const { handleCreateDocument } = useDocument();
@@ -77,21 +64,23 @@ export function Sidebar({
             </Button>
           </div>
 
-          <div>
-            <Item
-              onClick={handleCreateDocument}
-              icon={IconSquareRoundedPlus}
-              label="Novo documento"
-            />
+          <>
+            <Item.Root onClick={handleCreateDocument}>
+              <Item.Icon icon={IconSquareRoundedPlus} />
+              <Item.Title label="Novo documento" />
+            </Item.Root>
 
             <div className="my-2">
               <DocumentList />
             </div>
-          </div>
+          </>
         </div>
 
         <div className="space-y-4">
-          <Item icon={IconTrash} label="Lixeira" onClick={openMenu} />
+          <Item.Root onClick={openMenu}>
+            <Item.Icon icon={IconTrash} />
+            <Item.Title label="Lixeira" />
+          </Item.Root>
 
           <div className="h-[2px] bg-border mx-3" />
 
@@ -102,21 +91,13 @@ export function Sidebar({
             </Avatar>
 
             <div className="ml-1 space-y-1 truncate whitespace-nowrap">
-              <p className="text-sm leading-none font-medium">
-                {data?.user ? data.user.name : 'Nome'}
-              </p>
+              <p className="text-sm leading-none font-medium">{data?.user ? data.user.name : 'Nome'}</p>
               <p title={data?.user.email!} className="text-xs truncate text-muted-foreground">
                 {data?.user ? data.user.email : 'e-mail'}
               </p>
             </div>
 
-            <Button
-              onClick={() => signOut()}
-              type="submit"
-              variant={'ghost'}
-              size={'icon'}
-              className="ml-auto h-7 w-7"
-            >
+            <Button onClick={() => signOut()} type="submit" variant={'ghost'} size={'icon'} className="ml-auto h-7 w-7">
               <IconLogout size={20} />
             </Button>
           </div>
