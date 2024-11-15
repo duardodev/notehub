@@ -11,14 +11,10 @@ export function SignInButton() {
   const { data } = useSession();
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <motion.div initial={{ opacity: 0, y: -100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       {!data?.user ? (
         <Button onClick={() => signIn('google')}>
-          Fazer login com o Google
+          Entrar com o Google
           <IconBrandGoogle className="ml-2" size={18} />
         </Button>
       ) : (
