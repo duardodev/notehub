@@ -76,14 +76,10 @@ export function Toolbar({ initialData }: ToolbarProps) {
         </div>
       )}
 
-      <div className="py-4 lg:opacity-0 lg:group-hover:opacity-100 flex items-center flex-wrap gap-2 transition">
+      <div className="py-4 flex items-center flex-wrap gap-2 transition">
         {!initialData?.icon && (
           <IconPicker asChild onChange={handleIconSelect}>
-            <Button
-              size="sm"
-              variant="outline"
-              className="w-[156px] px-2 text-muted-foreground text-sx"
-            >
+            <Button size="sm" variant="outline" className="w-[156px] px-2 text-muted-foreground text-sx">
               <IconMoodSmile className="h-4 w-4 mr-2" />
               Adicionar ícone
             </Button>
@@ -92,11 +88,7 @@ export function Toolbar({ initialData }: ToolbarProps) {
 
         {!initialData?.coverImage && (
           <CoverImageModal initialData={initialData}>
-            <Button
-              size="sm"
-              variant="outline"
-              className="w-[156px] px-2 text-muted-foreground text-sx"
-            >
+            <Button size="sm" variant="outline" className="w-[156px] px-2 text-muted-foreground text-sx">
               <IconPhotoPlus className="h-4 w-4 mr-2" />
               Adicionar capa
             </Button>
