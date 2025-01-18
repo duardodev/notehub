@@ -35,8 +35,8 @@ export function SearchModal() {
   }, []);
 
   const { data: documents } = useQuery({
-    queryKey: ['get-documentss'],
-    queryFn: () => getDocuments({ parentDocumentId: undefined }),
+    queryKey: ['get-documents'],
+    queryFn: () => getDocuments({ parentDocumentId: null }),
   });
 
   function handleSelect(documentId: string) {
@@ -51,15 +51,8 @@ export function SearchModal() {
         <CommandGroup heading="Documentos">
           <CommandEmpty>Nenhum documento encontrado.</CommandEmpty>
           {documents?.map(document => (
-            <CommandItem
-              key={document.id}
-              value={`${document.id}-${document.title}`}
-              className="p-0"
-            >
-              <div
-                className="w-full py-2 pl-2 flex items-center"
-                onClick={() => handleSelect(document.id)}
-              >
+            <CommandItem key={document.id} value={`${document.id}-${document.title}`} className="p-0">
+              <div className="w-full py-2 pl-2 flex items-center" onClick={() => handleSelect(document.id)}>
                 {document.icon ? (
                   <div className="shrink-0 text-[18px]">{document.icon}</div>
                 ) : (
