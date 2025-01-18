@@ -16,8 +16,8 @@ export const useDocument = () => {
 
   const { mutateAsync: createDocumentFn } = useMutation({
     mutationFn: createDocument,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
         queryKey: ['get-documents'],
       });
 
@@ -27,9 +27,13 @@ export const useDocument = () => {
 
   const { mutateAsync: createChildDocumentFn } = useMutation({
     mutationFn: createDocument,
-    onSuccess: async variables => {
-      await queryClient.invalidateQueries({
-        queryKey: ['get-child-documents', variables?.parentDocumentId],
+    onSuccess: document => {
+      queryClient.invalidateQueries({
+        queryKey: ['get-child-documents', document?.parentDocumentId],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['get-documents'],
       });
 
       toast.success('Novo documento criado!', { duration: 2000 });
@@ -38,16 +42,16 @@ export const useDocument = () => {
 
   const { mutateAsync: archiveDocumentFn } = useMutation({
     mutationFn: archiveDocument,
-    onSuccess: async () => {
+    onSuccess: async document => {
       queryClient.invalidateQueries({
         queryKey: ['get-documents'],
       });
 
-      queryClient.invalidateQueries({
-        queryKey: ['get-child-documents'],
+      await queryClient.invalidateQueries({
+        queryKey: ['get-child-documents', document?.parentDocumentId],
       });
 
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ['get-archived-documents'],
       });
 
@@ -57,8 +61,8 @@ export const useDocument = () => {
 
   const { mutateAsync: deleteDocumentFn } = useMutation({
     mutationFn: deleteDocument,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
         queryKey: ['get-archived-documents'],
       });
 
@@ -68,13 +72,13 @@ export const useDocument = () => {
 
   const { mutateAsync: restoreDocumentFn } = useMutation({
     mutationFn: restoreDocument,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
+    onSuccess: document => {
+      queryClient.invalidateQueries({
         queryKey: ['get-archived-documents'],
       });
 
-      await queryClient.invalidateQueries({
-        queryKey: ['get-document-by-id'],
+      queryClient.invalidateQueries({
+        queryKey: ['get-document-by-id', document?.id],
       });
 
       queryClient.invalidateQueries({
@@ -82,7 +86,7 @@ export const useDocument = () => {
       });
 
       queryClient.invalidateQueries({
-        queryKey: ['get-child-documents'],
+        queryKey: ['get-child-documents', document?.parentDocumentId],
       });
 
       toast.success('Documento restaurado!', { duration: 2000 });
@@ -98,9 +102,8 @@ export const useDocument = () => {
         oldData?.map(data => (data.id === newData.id ? newData : data))
       );
 
-      queryClient.setQueryData(
-        ['get-child-documents', newData.parentDocumentId],
-        (oldData: any[]) => oldData?.map(data => (data.id === newData.id ? newData : data))
+      queryClient.setQueryData(['get-child-documents', newData.parentDocumentId], (oldData: any[]) =>
+        oldData?.map(data => (data.id === newData.id ? newData : data))
       );
     },
   });
@@ -122,11 +125,7 @@ export const useDocument = () => {
     }
   }
 
-  async function handleCreateChildDocument(
-    id?: string,
-    expanded?: boolean,
-    handleExpand?: () => void
-  ) {
+  async function handleCreateChildDocument(id?: string, expanded?: boolean, handleExpand?: () => void) {
     if (!id) return;
 
     try {
