@@ -21,14 +21,6 @@ export function Navbar({ isCollapsed, handleResetWidth }: NavbarProps) {
     queryFn: () => getDocumentById({ id: params.documentId as string }),
   });
 
-  if (isLoading) {
-    return (
-      <nav className="bg-background w-full p-4 flex items-center gap-x-3">
-        <Skeleton className="h-4 w-24" />
-      </nav>
-    );
-  }
-
   return (
     <nav className="bg-background h-16 w-full px-4 flex items-center justify-between gap-x-3">
       {isCollapsed && (
@@ -38,10 +30,14 @@ export function Navbar({ isCollapsed, handleResetWidth }: NavbarProps) {
       )}
 
       <div className="w-full flex items-center justify-between">
-        <div className="flex items-center gap-[6px]">
-          {document?.icon && <p>{document.icon}</p>}
-          <h1 className="text-sm truncate font-medium">{document?.title}</h1>
-        </div>
+        {isLoading ? (
+          <Skeleton className="h-4 w-24" />
+        ) : (
+          <div className="flex items-center gap-[6px]">
+            {document?.icon && <p>{document.icon}</p>}
+            <h1 className="text-sm truncate font-medium">{document?.title}</h1>
+          </div>
+        )}
 
         <ThemeToggle />
       </div>
