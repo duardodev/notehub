@@ -71,3 +71,7 @@
 .bn-container[data-theming-css-variables-demo][data-color-scheme='dark'] {
   --bn-colors-editor-background: 48 58% 2%;
 }
+
+.bn-container[data-theming-css-variables-demo][data-color-scheme='light'] {
+  --bn-colors-editor-background: 48 48% 97%;
+}
