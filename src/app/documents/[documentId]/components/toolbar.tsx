@@ -1,6 +1,5 @@
 'use client';
 
-import { ElementRef, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { IconPicker } from './icon-picker';
 import { CoverImageModal } from './cover-image-modal';
@@ -8,40 +7,13 @@ import { useDocument } from '@/hooks/use-document';
 import { Document } from '@prisma/client';
 
 import { IconMoodSmile, IconPhotoPlus, IconX } from '@tabler/icons-react';
-import TextareaAutosize from 'react-textarea-autosize';
 
 interface ToolbarProps {
   initialData?: Document | null;
 }
 
 export function Toolbar({ initialData }: ToolbarProps) {
-  const inputRef = useRef<ElementRef<'textarea'>>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(initialData?.title);
   const { updateDocumentFn } = useDocument();
-
-  function enableInput() {
-    setIsEditing(true);
-    setTimeout(() => {
-      setTitle(initialData?.title);
-      inputRef.current?.focus();
-    }, 0);
-  }
-
-  function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      setIsEditing(false);
-    }
-  }
-
-  function handleTitleChange(value: string) {
-    setTitle(value);
-    updateDocumentFn({
-      ...initialData,
-      title: value || 'Sem título',
-    });
-  }
 
   function handleIconSelect(icon: string) {
     updateDocumentFn({
@@ -95,24 +67,6 @@ export function Toolbar({ initialData }: ToolbarProps) {
           </CoverImageModal>
         )}
       </div>
-
-      {isEditing ? (
-        <TextareaAutosize
-          ref={inputRef}
-          onBlur={() => setIsEditing(false)}
-          onKeyDown={handleKeyDown}
-          value={title}
-          onChange={e => handleTitleChange(e.target.value)}
-          className="bg-transparent text-[#3F3F3F] dark:text-[#CFCFCF] text-5xl font-bold break-words outline-none resize-none"
-        />
-      ) : (
-        <div
-          onClick={enableInput}
-          className="text-[#3F3F3F] dark:text-[#CFCFCF] text-5xl font-bold pb-[11.5px] break-words outline-none"
-        >
-          {initialData?.title}
-        </div>
-      )}
     </div>
   );
 }

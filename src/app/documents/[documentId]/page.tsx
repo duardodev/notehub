@@ -10,6 +10,7 @@ import { Cover } from './components/cover';
 import { Toolbar } from './components/toolbar';
 import { useDocument } from '@/hooks/use-document';
 import { cn } from '@/lib/utils';
+import { Title } from './components/title';
 
 interface DocumentPageProps {
   params: {
@@ -38,10 +39,9 @@ export default function DocumentPage({ params }: DocumentPageProps) {
       {document?.isArchived && <Banner documentId={document.id} />}
       <Cover initialData={document} />
 
-      <div
-        className={cn('mt-24 mx-auto md:max-w-3xl lg:max-w-4xl', document?.coverImage && 'mt-16')}
-      >
+      <div className={cn('mt-24 mx-auto md:max-w-3xl lg:max-w-4xl', document?.coverImage && 'mt-16')}>
         <Toolbar initialData={document} />
+        <Title initialData={document} />
         <Editor initialContent={document?.content} onContentChange={handleContentChange} />
       </div>
     </div>
